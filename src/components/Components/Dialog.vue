@@ -28,15 +28,13 @@
 
 <style lang="scss" scoped>
     .dialog {
-        position: relative;
-        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
         &__img {
             width: 60px;
             height: 50px;
-            border-radius: 50%;
+            border-radius: 20%;
         }
         &-content {
             display: flex;

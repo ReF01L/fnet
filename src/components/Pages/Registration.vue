@@ -1,31 +1,28 @@
 <template>
     <main>
-        <div class="register-left">
-            <img src="../../assets/logo.png" alt="logo">
-            <h3>Login</h3>
-            <p>If you are already registered, click here.</p>
-            <button @click="swapWindow" class="btn">Sign in</button>
-        </div>
         <div class="register-right">
             <h2>Register Here</h2>
             <span class="register-error" v-if="error">{{error}}</span>
             <form class="register-form">
                 <div class="form-group">
-                    <input type="text" v-model="name" placeholder="Name" class="form-control">
+                    <input type="text" v-model="user.first_name" placeholder="Name" class="form-control">
                 </div>
                 <div class="form-group">
-                    <input type="text" v-model="surname" placeholder="Surname" class="form-control">
+                    <input type="text" v-model="user.last_name" placeholder="Surname" class="form-control">
                 </div>
                 <div class="form-group">
-                    <input type="email" v-model="email" placeholder="Email" class="form-control">
+                    <input type="email" v-model="user.email" placeholder="Email" class="form-control">
                 </div>
                 <div class="form-group">
-                    <input type="password" v-model="password_1" placeholder="Password" class="form-control">
+                    <input type="password" v-model="user.password" placeholder="Password" class="form-control">
                 </div>
                 <div class="form-group">
-                    <input type="password" v-model="password_2" placeholder="Repeat your password" class="form-control">
+                    <input type="password" v-model="user.password_repeat" placeholder="Repeat your password" class="form-control">
                 </div>
-                <button v-on:click="auth" type="button" class="btn">Register</button>
+                <div class="btns">
+                    <button @click="swapWindow" class="btn_sign">Sign in</button>
+                    <button @click="auth" type="button" class="btn">Register</button>
+                </div>
             </form>
         </div>
     </main>
@@ -40,11 +37,13 @@
         data() {
             return {
                 error: '',
-                name: '',
-                surname: '',
-                email: '',
-                password_1: '',
-                password_2: '',
+                user: {
+                    first_name: '',
+                    last_name: '',
+                    email: '',
+                    password: '',
+                    password_repeat: '',
+                }
             }
         },
         methods: {
@@ -52,23 +51,28 @@
                 this.$router.replace({name: Login.name})
             },
             auth() {
-                if (this.name === '') {
+                if (this.user.first_name === '') {
                     this.error = 'Вы не ввели ваше имя!';
-                }
-                else if (this.surname === '') {
+                } else if (this.user.last_name === '') {
                     this.error = 'Вы не ввели вашу фамилию!';
-                }
-                else if (this.email === '') {
+                } else if (this.user.email === '') {
                     this.error = 'Вы не ввели вашу почту!';
-                }
-                else if (this.password_1 === '' || this.password_2 === '') {
+                } else if (this.user.password === '' || this.user.password_repeat === '') {
                     this.error = 'Вы не ввели пароль!';
-                }
-                else if (this.password_1 !== this.password_2) {
+                } else if (this.user.password !== this.user.password_repeat) {
                     this.error = 'Пароли отличаются друг от друга!'
-                }
-                else {
+                } else {
                     // проверить не занята ли почта
+                    window.axios
+                        .post('http://20.188.3.202:5000/auth/register', this.user)
+                        .then(response => {
+                            // eslint-disable-next-line no-console
+                            console.log(response)
+                        })
+                        .catch(error => {
+                            // eslint-disable-next-line no-console
+                            console.log(error)
+                        })
                     this.$router.replace({name: Profile.name})
                 }
             }
@@ -83,53 +87,47 @@
         justify-content: center;
         width: 100%;
         height: 100vh;
-        background: linear-gradient(to right, #ee5253, #ff9f43);
-    }
-
-    .register-left {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        color: #ffffff;
-    }
-
-    .register-left img {
-        margin-top: 60px;
-        margin-bottom: 18px;
-        width: 80px;
-        -webkit-animation: mover 1s infinite alternate;
-        -o-animation: mover 1s infinite alternate;
-        animation: mover 1s infinite alternate;
-    }
-
-    .register-left p {
-        padding: 20px 20px;
-        font-style: italic;
-        font-size: 20px;
-    }
-
-    .register-left h3 {
-        font-size: 30px;
+        background: #f1f1f1;
     }
 
     .register-error {
         color: red;
     }
 
-    .btn {
+    .btns {
+        margin-top: 15px;
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 15px;
+    }
+    .btn_sign {
         border-radius: 1.5rem;
         border: none;
         width: 120px;
-        background-color: #f8f8f8;
+        background-color: #ced2cc;
         font-weight: 600;
-        color: #555555;
+        color: #202020;
+        padding: 10px;
+        margin-right: 15px;
+    }
+    .btn_sign:hover {
+        background-color: #202020;
+        color: #ced2cc;
+        cursor: pointer;
+    }
+
+    .btn {
+        border-radius: 1.5rem;
+        border: 1px solid #202020;
+        width: 120px;
+        background-color: transparent;
+        font-weight: 600;
+        color: #fff;
         padding: 10px;
     }
 
-    .register-left .btn:hover {
-        background-color: #555555;
-        color: #f8f8f8;
+    .btn:hover {
+        background-color: #202020;
         cursor: pointer;
     }
 
@@ -139,18 +137,16 @@
         flex-direction: column;
         align-items: center;
         width: 25%;
-        background-color: #f8f8f8;
-        border-top-left-radius: 10% 50%;
-        border-bottom-left-radius: 10% 50%;
+        background: #2c3e50;
+        border-radius: 10px 10px 10px 10px;
         padding: 50px;
     }
 
     .register-right h2 {
         text-align: center;
         font-size: 30px;
-        color: #555555;
+        color: #f1f1f1;
         margin-bottom: 10px;
-        color: #555555;
     }
 
     .register-form {
@@ -182,18 +178,6 @@
     .register-form input:focus {
         border: 1px solid #ffdde8;
         background: linear-gradient(to right, #fff6f9, #fafafa);
-    }
-
-    .register-right .btn {
-        float: right;
-        background-color: #ff9800;
-        margin-top: 25px;
-        color: #fff;
-    }
-
-    .register-right .btn:hover {
-        background-color: #ff5722;
-        cursor: pointer;
     }
 
     @keyframes mover {

@@ -6,10 +6,6 @@
             </div>
             <img v-if="image" class="record-image"
                  src="../../assets/profileImage.png" draggable="false" alt="Notation image">
-            <audio controls v-if="music" class="record-audio">
-                <source src="../../assets/music/test.mp3">
-                Аудио не поддерживается вашим браузером
-            </audio>
         </div>
         <div class="panel">
             <div class="panel__pin">
@@ -35,7 +31,6 @@
             sender: String,
             text: String,
             image: Boolean,
-            music: Boolean,
             likes: Number,
             com: Number,
             share: Number
@@ -72,11 +67,6 @@
             width: 80%;
             max-height: 1080px;
             min-height: 20px;
-        }
-        &-audio {
-            margin-top: 25px;
-            width: 60%;
-            // TODO: Разобраться с декорированием audio
         }
     }
     .panel {

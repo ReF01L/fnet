@@ -12,7 +12,6 @@ import Messages from "@/components/Pages/Messages";
 import Friends from "@/components/Pages/Friends";
 import Groups from "@/components/Pages/Groups";
 import Photo from "@/components/Pages/Photo";
-import Music from "@/components/Pages/Music";
 
 
 window.axios = axios;
@@ -47,11 +46,6 @@ const router = new VueRouter({
             path: '/photo',
             name: 'Photo',
             component: Photo
-        },
-        {
-            path: '/music',
-            name: 'Music',
-            component: Music
         },
         {
             path: '/groups',

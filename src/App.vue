@@ -1,6 +1,7 @@
 <template>
     <div id="app">
         <router-view></router-view>
+        <Footer v-if="this.$router.currentRoute.name !== 'Login' && this.$router.currentRoute.name !== 'Auth'" />
         <!--    <RStartPage v-if="RWindowActive && !isLogin" @RWindowActive="swapWindow" @login="isLogin = true" />-->
         <!--    <LStartWindow v-if="!RWindowActive && !isLogin" @RWindowActive="swapWindow" @login="isLogin = true" />-->
         <!--    <div v-show="isLogin" class="mainPage">-->
@@ -21,8 +22,10 @@
     // import LeftSide from '@/components/LeftSide'
     // import RightSide from '@/components/RightSide'
 
+    import Footer from "@/components/Footer";
     export default {
         name: 'App',
+        components: {Footer},
         // data () {
         //   return {
         //     isLogin: false,
@@ -64,7 +67,14 @@
     * {
         margin: 0;
         padding: 0;
-        --main-bg-color: #ffeabd;
+
+        --main-bg-color: #f1f1f1;
+        --status-input-bg-color: #ea6a47;
+        --status-btn-color: #ac3e31;
+        --status-short-text-color: #7e909a;
+        --status-full-text-color: #202020;
+        --basic-btn-color: #0091d5;
+        --basic-placeholder-color: #202020;
     }
 
     #app {

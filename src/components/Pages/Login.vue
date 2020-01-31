@@ -1,11 +1,5 @@
 <template>
     <main>
-        <div class="login-left">
-            <img src="../../assets/logo.png" alt="logo">
-            <h3>Join us</h3>
-            <p>If you have not registered yet, click here.</p>
-            <button @click="swapWindow" class="btn">Sign Up</button>
-        </div>
         <div class="login-right">
             <h2>Login Here</h2>
             <div class="login-form">
@@ -15,7 +9,10 @@
                 <div class="form-group">
                     <input type="password" v-model="user.password" placeholder="Password" class="form-control">
                 </div>
-                <button v-on:click="login" type="button" class="btn">Login</button>
+                <div class="btns">
+                    <button @click="swapWindow" class="btn_sign">Sign Up</button>
+                    <button v-on:click="login" type="button" class="btn">Login</button>
+                </div>
             </div>
         </div>
     </main>
@@ -58,56 +55,51 @@
     }
 </script>
 
-<style scoped>
+
+<style lang="scss" scoped>
     main {
         display: flex;
         align-items: center;
         justify-content: center;
         width: 100%;
         height: 100vh;
-        background: linear-gradient(to right, #ff9f43, #ee5253);
+        background: #f1f1f1;
     }
-
-    .login-left {
+    .btns {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        color: #ffffff;
+        justify-content: flex-end;
+        padding-right: 15px;
     }
 
-    .login-left img {
-        margin-top: 60px;
-        margin-bottom: 18px;
-        width: 80px;
-        -webkit-animation: mover 1s infinite alternate;
-        -o-animation: mover 1s infinite alternate;
-        animation: mover 1s infinite alternate;
+    .btn_sign {
+        border-radius: 1.5rem;
+        border: none;
+        width: 120px;
+        background-color: #ced2cc;
+        font-weight: 600;
+        color: #202020;
+        padding: 10px;
+        margin-right: 15px;
     }
 
-    .login-left h3 {
-        font-size: 30px;
-    }
-
-    .login-left p {
-        padding: 20px 20px;
-        font-style: italic;
-        font-size: 20px;
+    .btn_sign:hover {
+        background-color: #202020;
+        color: #ced2cc;
+        cursor: pointer;
     }
 
     .btn {
         border-radius: 1.5rem;
-        border: none;
+        border: 1px solid #202020;
         width: 120px;
-        background-color: #f8f8f8;
+        background-color: transparent;
         font-weight: 600;
-        color: #555555;
+        color: #fff;
         padding: 10px;
     }
 
-    .login-left .btn:hover {
-        background-color: #555555;
-        color: #f8f8f8;
+    .btn:hover {
+        background-color: #202020;
         cursor: pointer;
     }
 
@@ -117,18 +109,16 @@
         flex-direction: column;
         align-items: center;
         width: 25%;
-        background-color: #f8f8f8;
-        border-top-left-radius: 10% 50%;
-        border-bottom-left-radius: 10% 50%;
+        background: #2c3e50;
+        border-radius: 10px 10px 10px 10px;
         padding: 50px;
     }
 
     .login-right h2 {
         text-align: center;
         font-size: 30px;
-        color: #555555;
+        color: #f1f1f1;
         margin-bottom: 10px;
-        color: #555555;
     }
 
     .login-form {
@@ -160,34 +150,5 @@
     .login-form input:focus {
         border: 1px solid #ffdde8;
         background: linear-gradient(to right, #fff6f9, #fafafa);
-    }
-
-    .login-right .btn {
-        float: right;
-        background-color: #ff9800;
-        margin-top: 25px;
-        color: #fff;
-    }
-
-    .login-right .btn:hover {
-        background-color: #ff5722;
-        cursor: pointer;
-    }
-
-    @keyframes mover {
-        0% {
-            -webkit-transform: translateY(0);
-            -moz-transform: translateY(0);
-            -ms-transform: translateY(0);
-            -o-transform: translateY(0);
-            transform: translateY(0);
-        }
-        100% {
-            -webkit-transform: translateY(-20px);
-            -moz-transform: translateY(-20px);
-            -ms-transform: translateY(-20px);
-            -o-transform: translateY(-20px);
-            transform: translateY(-20px);
-        }
     }
 </style>

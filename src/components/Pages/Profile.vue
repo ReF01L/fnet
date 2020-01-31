@@ -41,29 +41,27 @@
         <div class="profile-hero">
             <CreateNoteForm/>
             <Notation class="notation" v-for="notation in notations" :key="notation.id" :sender="notation.sender"
-                      :text="notation.text" :image="notation.image !== ''" :music="notation.music !== ''"
+                      :text="notation.text" :image="notation.image !== ''"
                       :likes="notation.likes" :com="notation.likes" :share="notation.share"/>
         </div>
-        <Footer />
     </div>
 </template>
 
 <script>
     import Notation from "@/components/Components/Notation";
-    import Footer from "@/components/Footer";
     import CreateNoteForm from "@/components/Components/CreateNoteForm";
 
     export default {
         name: 'Profile',
-        components: {CreateNoteForm, Footer, Notation},
+        components: {CreateNoteForm, Notation},
         data() {
             return {
                 status: '',
                 showStatus: false,
                 notations: [
-                    {sender: 'Alexandr', text: 'AlexandrText;', image: 'sdaf', music: 'df', likes: 0, com: 0, share: 0},
-                    {sender: 'ReF0iL', text: 'ReF0iLText', image: 'dsaf', music: 'df', likes: 0, com: 0, share: 0},
-                    {sender: 'Maksim', text: 'MaxText', image: 'dsaf', music: 'df', likes: 0, com: 0, share: 0}
+                    {sender: 'Alexandr', text: 'AlexandrText;', image: 'sdaf', likes: 0, com: 0, share: 0},
+                    {sender: 'ReF0iL', text: 'ReF0iLText', image: 'dsaf', likes: 0, com: 0, share: 0},
+                    {sender: 'Maksim', text: 'MaxText', image: 'dsaf', likes: 0, com: 0, share: 0}
                 ],
             }
         }
@@ -90,16 +88,9 @@
     }
 
     .profile {
-        --status-input-bg-color: cyan;
-        --status-btn-color: lightblue;
-        --status-short-text-color: #2c3e50;
-        --status-full-text-color: #555555;
-        --basic-btn-color: darkcyan;
-        --basic-placeholder-color: #555555;
-
         width: 100%;
         height: 100%;
-        background-color: var(--main-bg-color);
+        background: var(--main-bg-color);
 
         &-header {
             padding-top: 50px;
@@ -205,7 +196,7 @@
                     }
 
                     &__btn {
-                        background-color: #00bebe;
+                        background-color: var(--basic-btn-color);
                         font-weight: 700;
                         width: 120px;
                         padding: 8px 20px;
@@ -219,11 +210,11 @@
 
                         &:hover {
                             cursor: pointer;
-                            background-color: rgba(0, 139, 139, 0.4);
+                            background-color: rgba(64, 153, 237, 0.7);
                         }
 
                         &:active {
-                            background-color: rgba(0, 88, 88, 1);
+                            background-color: rgba(25, 61, 112, 1);
                         }
                     }
                 }
