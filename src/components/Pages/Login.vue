@@ -10,6 +10,7 @@
                     <input type="password" v-model="user.password" placeholder="Password" class="form-control">
                 </div>
                 <div class="btns">
+                    <span class="rpass">Remember password</span>
                     <button @click="swapWindow" class="btn_sign">Sign Up</button>
                     <button v-on:click="login" type="button" class="btn">Login</button>
                 </div>
@@ -55,7 +56,6 @@
     }
 </script>
 
-
 <style lang="scss" scoped>
     main {
         display: flex;
@@ -64,6 +64,17 @@
         width: 100%;
         height: 100vh;
         background: #f1f1f1;
+    }
+    .rpass {
+        width: calc(10px * 17 / 2);
+        color: #f1f1f1;
+        margin: auto 10px;
+        font-size: 10px;
+        padding-bottom: 3px;
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
     }
     .btns {
         display: flex;

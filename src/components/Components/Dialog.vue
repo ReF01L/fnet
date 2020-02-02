@@ -3,7 +3,10 @@
         <img src="../../assets/profileImage.png" alt="" class="dialog__img">
         <div class="dialog-content">
             <div class="dialog-content-title">
-                <span class="dialog-content-title__companion">{{companion}}</span>
+                <div class="dialog-content-title-sub">
+                    <span class="dialog-content-title-sub__companion">{{companion}}</span>
+                    <div v-if="count" class="dialog-content-title-sub__count">{{count}}</div>
+                </div>
                 <span class="dialog-content-title__time">{{time}}</span>
             </div>
             <div class="dialog-content__message">
@@ -21,7 +24,8 @@
             text: String,
             image: String,
             isGroup: Boolean,
-            time: String
+            time: String,
+            count: Number
         }
     }
 </script>
@@ -31,11 +35,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
         &__img {
             width: 60px;
             height: 50px;
             border-radius: 20%;
         }
+
         &-content {
             display: flex;
             align-items: center;
@@ -45,12 +51,23 @@
             margin-left: 15px;
             padding-bottom: 10px;
             border-bottom: 1px solid #ccc;
+
             &-title {
                 display: flex;
                 justify-content: space-between;
                 width: 100%;
-                &__companion {
 
+                &-sub {
+                    display: flex;
+                    width: 85%;
+                    justify-content: space-between;
+                    &__companion {
+
+                    }
+
+                    &__count {
+
+                    }
                 }
 
                 &__time {
