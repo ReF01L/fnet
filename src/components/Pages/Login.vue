@@ -10,9 +10,9 @@
                     <input type="password" v-model="user.password" placeholder="Password" class="form-control">
                 </div>
                 <div class="btns">
-                    <span class="rpass">Remember password</span>
+                    <span @click="rememberPassword" class="rpass">Remember password</span>
                     <button @click="swapWindow" class="btn_sign">Sign Up</button>
-                    <button v-on:click="login" type="button" class="btn">Login</button>
+                    <button @click="login" type="button" class="btn">Login</button>
                 </div>
             </div>
         </div>
@@ -22,6 +22,8 @@
 <script>
     import Registration from "@/components/Pages/Registration";
     import Profile from "@/components/Pages/Profile";
+    import RememberPassword from "@/components/Pages/RememberPassword";
+    import {mapGetters, mapActions} from 'vuex';
 
     export default {
         name: 'Login',
@@ -34,21 +36,17 @@
             }
         },
         methods: {
+            ...mapGetters(['getToken']),
+            ...mapActions(['exportToken']),
+            rememberPassword() {
+                this.$router.replace({name: RememberPassword.name})
+            },
             swapWindow() {
                 this.$router.replace({name: Registration.name})
             },
             login() {
                 if (this.user.email !== '' && this.user.password !== '') {
-                    window.axios
-                        .post('http://20.188.3.202:5000/auth/login', this.user)
-                        .then(response => {
-                            // eslint-disable-next-line no-console
-                            console.log(response)
-                        })
-                        .catch(error => {
-                            // eslint-disable-next-line no-console
-                            console.log(error)
-                        })
+                    this.exportToken(this.user);
                 }
                 this.$router.replace({name: Profile.name})
             }
@@ -65,17 +63,20 @@
         height: 100vh;
         background: #f1f1f1;
     }
+
     .rpass {
         width: calc(10px * 17 / 2);
         color: #f1f1f1;
         margin: auto 10px;
         font-size: 10px;
         padding-bottom: 3px;
+
         &:hover {
             text-decoration: underline;
             cursor: pointer;
         }
     }
+
     .btns {
         display: flex;
         justify-content: flex-end;

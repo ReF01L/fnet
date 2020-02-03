@@ -91,7 +91,7 @@
         width: 100%;
         height: 100%;
         background: var(--main-bg-color);
-
+        
         &-header {
             padding-top: 50px;
             display: flex;

@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <router-view></router-view>
-        <Footer v-if="this.$router.currentRoute.name !== 'Login' && this.$router.currentRoute.name !== 'Auth'" />
+        <Footer v-if="this.$router.currentRoute.name !== 'Login' && this.$router.currentRoute.name !== 'Auth' && this.$router.currentRoute.name !== 'RememberPassword'" />
     </div>
 </template>
 

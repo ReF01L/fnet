@@ -133,7 +133,7 @@
                         .catch(error => {
                             // eslint-disable-next-line no-console
                             console.log(error)
-                        })
+                        });
                     this.$router.replace({name: Profile.name})
                 } else {
                     this.error = 'Вы не ввели код!';
