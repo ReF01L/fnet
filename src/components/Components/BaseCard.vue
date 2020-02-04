@@ -1,14 +1,17 @@
 <template>
-    <div class="place">
-        <img src="../../assets/profileImage.png" alt="" class="place__img">
-        <div class="main">
-            <div class="place__main">
-                <span class="place__main-name">{{name}}</span>
-                <span v-if="info" class="place__main-info">{{info}}</span>
-                <span v-if="btn === ''" class="place__main-message">Написать сообщение</span>
-                <button v-else class="place__main__btn">{{btn}}</button>
+    <div class="card">
+        <div class="card__title">
+            <span class="card__title-title">{{name}}</span>
+            <span v-if="status !== ''" class="card__title-status">&lt;{{status}}/&gt;</span>
+        </div>
+        <div class="card__body">
+            <div class="card__body__img">
+                <img src="../../assets/profileImage.png" alt="" class="card__body__img-img circle-img">
             </div>
-            <span v-if="status" class="status">{{status}}</span>
+            <div class="card__body__interaction">
+                <span>dialog->join()</span>
+                <span>friend->detach()</span>
+            </div>
         </div>
     </div>
 </template>
@@ -18,69 +21,59 @@
         name: "BaseCard",
         props: {
             name: String,
-            info: String,
             status: String,
-            btn: String
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .place {
-        margin: 5px 0;
-        padding: 5px 0;
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-        box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-        .main {
-            width: 100%;
+    .card {
+        width: 50%;
+        &__title {
+            background: #484848;
+            color: #f1f1f1;
+            border-radius: 30px 30px 0 0;
             display: flex;
             justify-content: space-between;
-            .status {
-                margin-right: 25px;
-            }
-        }
-        &__img {
-            width: 120px;
-            height: 80px;
-            border-radius: 15%;
-            margin-left: 2%;
-            align-self: center;
-        }
-        &__main {
-            display: flex;
-            flex-direction: column;
-            margin-left: 25px;
-            &__btn {
-                padding: 5px 0;
-                margin-top: 10%;
-                outline: none;
-                border: 1px solid #2c3e50;
-                border-radius: 3px;
-                -webkit-transition: 0.2s;
-                -moz-transition: 0.2s;
-                -ms-transition: 0.2s;
-                -o-transition: 0.2s;
-                transition: 0.2s;
-                &:hover {
-                    background: #2c3e50;
-                    color: #f1f1f1;
-                    cursor: pointer;
-                }
+            align-items: center;
+            min-height: 40px;
+            &-status {
+                font-style: italic;
+                color: #6AB187;
             }
             & span {
-                padding: 5px;
+                margin: 0 20px;
             }
-            &-name {
-
+        }
+        &__body {
+            background: #202020;
+            border-radius: 0 0 32px 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &__img {
+                margin: 20px auto;
+                &-img {
+                    width: 200px;
+                    height: 200px;
+                }
             }
-            &-info {
-
-            }
-            &-message {
-                & a{
-                    text-decoration: none;
+            &__interaction {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 20px;
+                & span {
+                    display: block;
+                    width: 100%;
+                    color: #B3C100;
+                    padding: 10px 15px;
+                    background: #484848;
+                    border-radius: 30px;
+                    margin: 10px 0;
+                    &:last-child {
+                        color: #D32D41;
+                    }
                 }
             }
         }

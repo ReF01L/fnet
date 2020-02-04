@@ -7,7 +7,6 @@ import Registration from "@/components/Pages/Registration";
 import Profile from "@/components/Pages/Profile";
 import Messages from "@/components/Pages/Messages";
 import Friends from "@/components/Pages/Friends";
-import Groups from "@/components/Pages/Groups";
 import Photo from "@/components/Pages/Photo";
 import RememberPassword from "@/components/Pages/RememberPassword";
 import NewPassword from "@/components/Pages/NewPassword";
@@ -31,11 +30,6 @@ export default new VueRouter({
             path: '/photo',
             name: Photo.name,
             component: Photo
-        },
-        {
-            path: '/groups',
-            name: Groups.name,
-            component: Groups
         },
         {
             path: '/messages',
