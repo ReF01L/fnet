@@ -1,27 +1,25 @@
 <template>
     <div class="friends">
-        <div class="friends__left">
-            <button class="btn left_btn friends__left__btn-add left_active">Add as friend</button>
-            <button class="btn left_btn friends__left__btn-request">Outgoing request</button>
-            <div v-if="left_add" class="friends__left__friends">
-                <BaseCard v-for="friend in add" :key="friend.id" :name="friend.name" :status="friend.status"
-                          :btn="'Add as friend'"/>
-            </div>
-            <div v-else class="friends__left__friends">
-                <BaseCard v-for="friend in request" :key="friend.id" :name="friend.name" :status="friend.status"
-                          :btn="'Cancel'"/>
-            </div>
+        <div class="friends__search">
+            <input type="search" class="search" placeholder="<Find/>">
         </div>
-        <div class="friends__right">
-            <form class="search-form">
-                <input v-model="search" class="search-form__input" type="text" placeholder="friends">
-                <input class="search-form__submit" type="submit" value="Search">
-            </form>
-            <button class="btn right_btn friends__right__btn-all right_active">All friends</button>
-            <button class="btn right_btn friends__right__btn-online">Friends online</button>
-            <div class="friends__right__friends">
-                <BaseCard v-for="friend in cardByTitle" :key="friend.id" :info="friend.info" :name="friend.name"
-                          :status="friend.status" :btn="''"/>
+        <div class="friends__place">
+            <div class="friends__request">
+                <div class="friends__request__title">
+                    <span class="friends__request__title-title">&lt;friend_requests/&gt;</span>
+                </div>
+                <div class="friends__request__body">
+                    <div class="friends__request__body__card" v-for="f in request" :key="f.id">
+                        <div class="friends__request__body__card-img">
+                            <img class="circle-img" src="../../assets/profileImage.png" alt="">
+                        </div>
+                        <span class="friends__request__body__card-add">+</span>
+                    </div>
+                </div>
+            </div>
+            <div class="friends__current">
+                <BaseCard class="friends__current-card" v-for="friend in friends" :key="friend.id"
+                    :name="friend.name" :status="friend.status"/>
             </div>
         </div>
     </div>
@@ -35,46 +33,20 @@
         components: {BaseCard},
         data() {
             return {
-                left_add: true,
                 search: '',
                 friends: [
-                    {name: 'Дмитрий Салушкин', info: 'ДВФУ', status: 'online'},
-                    {name: 'Дмитрий Салушкин', info: 'ДВФУ', status: 'online'},
-                    {name: 'Дмитрий Салушкин', info: '', status: ''},
-                    {name: 'Дмитрий Салушкин', info: 'ДВФУ', status: ''},
-                    {name: 'Дмитрий Салушкин', info: 'ДВФУ', status: 'online'},
-                ],
-                add: [
-                    {name: 'Дмитрий Салушкин', status: 'online'},
                     {name: 'Дмитрий Салушкин', status: 'online'},
                     {name: 'Дмитрий Салушкин', status: 'online'},
                     {name: 'Дмитрий Салушкин', status: ''},
+                    {name: 'Дмитрий Салушкин', status: ''},
                     {name: 'Дмитрий Салушкин', status: 'online'},
-                    {name: 'Дмитрий Салушкин', status: ''}
                 ],
                 request: [
-                    {name: 'Дмитрий Салушкин', status: 'online'},
-                    {name: 'Дмитрий Салушкин', status: ''},
-                    {name: 'Дмитрий Салушкин', status: 'online'},
-                    {name: 'Дмитрий Салушкин', status: ''}
+                    {name: 'Дмитрий Салушкин'},
+                    {name: 'Дмитрий Салушкин'},
+                    {name: 'Дмитрий Салушкин'}
                 ]
             }
-        },
-        mounted() {
-            document.querySelectorAll('.right_btn').forEach(elem => {
-                elem.addEventListener('click', () => {
-                    document.querySelector('.right_active').classList.remove('right_active');
-                    elem.classList.add('right_active');
-                })
-            })
-            document.querySelectorAll('.left_btn').forEach(elem => {
-                elem.addEventListener('click', () => {
-                    if (!elem.classList.contains('left_active'))
-                        this.left_add = !this.left_add;
-                    document.querySelector('.left_active').classList.remove('left_active');
-                    elem.classList.add('left_active');
-                })
-            })
         },
         computed: {
             cardByTitle() {
@@ -85,128 +57,81 @@
 </script>
 
 <style lang="scss" scoped>
-    .search-form {
-        width: 100%;
-    }
-
-    .btn {
-        width: 120px;
-        height: 40px;
-        border-radius: 5px;
-        border: none;
-        outline: none;
-    }
-
-    .left_active {
-        background: red;
-        color: #f1f1f1;
-    }
-
-    .right_active {
-        background: red;
-        color: #f1f1f1;
-    }
-
     .friends {
-        width: 100%;
-        height: 100vh;
-        background: var(--main-bg-color);
-        display: flex;
-        justify-content: space-around;
-
-        &__left {
-            width: 30%;
+        padding-top: 40px;
+        width: 100vw;
+        min-height: calc(100vh + 60px);
+        background-color: var(--main-bg-color);
+        &__search {
+            margin-bottom: 20px;
+            background: #CED2CC;
+            border-radius: 20px;
+            padding: 10px;
+            & input {
+                outline: none;
+                border: none;
+                border-radius: 10px;
+                width: 100%;
+                padding: 10px;
+            }
+        }
+        &__place {
             display: flex;
-            flex-direction: column;
-
-            &__btn-add {
-                width: 100%;
-                border: 1px solid red;
-
-                &:hover {
-                    cursor: pointer;
+            justify-content: space-around;
+            & .friends__request {
+                width: 25%;
+                &__title {
+                    text-transform: capitalize;
+                    font-size: 20px;
+                    text-align: center;
+                    height: 40px;
+                    background: #484848;
+                    border-radius: 30px 30px 0 0;
+                    color: #f1f1f1;
+                    padding: 10px;
+                }
+                &__body {
+                    background: #202020;
+                    border-radius: 0 0 30px 30px;
+                    &__card {
+                        position: relative;
+                        padding: 10px;
+                        &-img {
+                            & img {
+                                width: 200px;
+                                height: 200px;
+                            }
+                        }
+                        &-add {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            position: absolute;
+                            color: #f1f1f1;
+                            font-weight: 900;
+                            font-size: 46px;
+                            border-radius: 30px;
+                            background: #6AB187;
+                            padding: 5px 15px 0;
+                            bottom: 5%;
+                            right: 25%;
+                            transition: 0.1s;
+                            &:hover {
+                                cursor: pointer;
+                                font-size: 50px;
+                            }
+                        }
+                    }
                 }
             }
-
-            &__btn-request {
-                width: 100%;
-                border: 1px solid red;
-
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-
-            &__friends {
-
-            }
-        }
-
-        &__right {
-            width: 50%;
-
-            &__btn-all {
-                width: 45%;
-                border: 1px solid red;
-
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-
-            &__btn-online {
-                width: 45%;
-                border: 1px solid red;
-
-                &:hover {
-                    cursor: pointer;
-                }
-            }
-
-            &__friends {
+            & .friends__current {
+                width: 60%;
                 display: flex;
-                flex-direction: column;
-            }
-        }
-    }
-
-    .search-form {
-        & input {
-            position: relative;
-            display: inline-block;
-            font-size: 20px;
-            box-sizing: border-box;
-            -webkit-transition: .5s;
-            -moz-transition: .5s;
-            -ms-transition: .5s;
-            -o-transition: .5s;
-            transition: .5s;
-        }
-
-        &__input {
-            background-color: lightsalmon;
-            width: 70%;
-            height: 50px;
-            border: none;
-            outline: none;
-            padding: 0 25px;
-            border-radius: 25px 0 0 25px;
-        }
-
-        &__submit {
-            position: relative;
-            border-radius: 0 25px 25px 0;
-            height: 50px;
-            width: 30%;
-            max-width: 150px;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            background-color: #ff9800;
-            color: #fff;
-
-            &:hover {
-                background-color: #ff5722;
+                flex-wrap: wrap;
+                &-card {
+                    margin: 0 15px 30px;
+                    flex-basis: 5%;
+                }
             }
         }
     }

@@ -1,24 +1,26 @@
 <template>
+    <!--TODO: Принаведении на карточку, поворачивать её-->
     <div class="notations">
-        <h2 class="title">{{ sender }}:</h2>
-        <div class="record">
-            <div v-if="text" class="record-text">{{ text }}
+        <div class="notation">
+            <div class="notation__title">
+                <span class="notation__title-name">{{sender}}</span>
+                <span class="notation__title-date">{{date}}</span>
             </div>
-            <img v-if="image" class="record-image"
-                 src="../../assets/profileImage.png" draggable="false" alt="Notation image">
-        </div>
-        <div class="panel">
-            <div class="panel__pin">
-                <i class="fa fa-heart" aria-hidden="true"></i>
-                <span class="panel__pin-like">{{ likes }}</span>
-            </div>
-            <div class="panel__pin">
-                <i class="fa fa-comment" aria-hidden="true"></i>
-                <span class="panel__pin-comments">{{ com }}</span>
-            </div>
-            <div class="panel__pin">
-                <i class="fa fa-share" aria-hidden="true"></i>
-                <span class="panel__pin-share">{{ share }}</span>
+            <div class="notation__body">
+                <div v-if="image !== ''" class="notation__body__img">
+                    <span class="notation__body__img-tag">&lt;img&gt;</span>
+                    <img class="notation__body__img-img" :src="require('../../assets/' + image)"/>
+                    <span class="notation__body__img-tag">&lt;/img&gt;</span>
+                </div>
+                <div v-if="text !== ''" class="notation__body__text">
+                    <span class="notation__body__text-tag">&lt;text&gt;</span>
+                    <span class="notation__body__text-text">{{text}}</span>
+                    <span class="notation__body__text-tag">&lt;/text&gt;</span>
+                </div>
+                <div class="notation__coop">
+                    <span class="notation__coop-views">&lt;views:{{likes}}&gt;</span>
+                    <span class="notation__coop-likes">&lt;likes:{{likes}}&gt;</span>
+                </div>
             </div>
         </div>
     </div>
@@ -30,67 +32,81 @@
         props: {
             sender: String,
             text: String,
-            image: Boolean,
+            image: String,
             likes: Number,
-            com: Number,
-            share: Number
+            date: String,
+            views: Number
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .notations {
-        margin-top: 40px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    .title {
-        margin: 15px;
-        font-size: 20px;
-    }
-    .record {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 25px;
-        min-width: 40%;
-        &-text {
-            width: 80%;
-            margin-bottom: 15px;
+    .notation {
+        width: 60%;
+        &__title {
+            background: #484848;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #f1f1f1;
+            min-height: 40px;
+            border-radius: 30px 32px 0 0;
+            & span {
+                margin: auto 25px;
+            }
         }
-        &-image {
-            min-width: 40px;
-            max-width: 720px;
-            width: 80%;
-            max-height: 1080px;
-            min-height: 20px;
-        }
-    }
-    .panel {
-        display: flex;
-        font-size: 18px;
 
-        &__pin {
+        &__body {
+            background: #202020;
+            color: #f1f1f1;
+            border-radius: 0 0 30px 30px;
+            &__img {
+                display: flex;
+                flex-direction: column;
+                padding: 15px;
+                &-tag {
+                    align-self: flex-start;
+                    color: #EA6A47;
+                    text-transform: capitalize;
+                    font-size: 24px;
+                    &:last-child {
+                        align-self: flex-end;
+                    }
+                }
+                &-img {
+                    margin: 25px;
+                }
+            }
+            &__text {
+                display: flex;
+                flex-direction: column;
+                padding: 15px;
+                &-tag {
+                    align-self: flex-start;
+                    color: #4cb5f5;
+                    text-transform: capitalize;
+                    font-size: 24px;
+                    &:last-child {
+                        align-self: flex-end;
+                    }
+                }
+                &-text {
+                    margin: 25px;
+                }
+            }
+        }
+
+        &__coop {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
             padding-right: 10px;
-            margin-right: 10px;
-
-            &:hover {
-                cursor: pointer;
-            }
-
-            &-like {
-                padding-left: 3px;
-            }
-
-            &-comments {
-                padding-left: 3px;
-            }
-
-            &-share {
-                padding-left: 3px;
+            & span {
+                padding: 15px;
+                color: #B3C100;
+                &:last-child {
+                    color: #DBAE58;
+                }
             }
         }
     }

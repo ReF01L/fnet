@@ -17,10 +17,6 @@
                 <span class="content">Friends</span>
                 <i class="fa fa-user" aria-hidden="true"></i>
             </li>
-            <li class="list-item" v-on:click="goToGroups">
-                <span class="content">Groups</span>
-                <i class="fa fa-users" aria-hidden="true"></i>
-            </li>
             <li class="list-item" v-on:click="goToPhoto">
                 <span class="content">Photos</span>
                 <i class="fa fa-camera" aria-hidden="true"></i>
@@ -34,7 +30,6 @@
     import Feed from "@/components/Pages/Feed";
     import Messages from "@/components/Pages/Messages";
     import Friends from "@/components/Pages/Friends";
-    import Groups from "@/components/Pages/Groups";
     import Photo from "@/components/Pages/Photo";
 
     export default {
@@ -55,10 +50,6 @@
             goToFriends() {
                 if (this.$router.currentRoute.name !== Friends.name)
                     this.$router.push({name: Friends.name})
-            },
-            goToGroups() {
-                if (this.$router.currentRoute.name !== Groups.name)
-                    this.$router.push({name: Groups.name})
             },
             goToPhoto() {
                 if (this.$router.currentRoute.name !== Photo.name)

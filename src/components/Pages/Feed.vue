@@ -1,9 +1,9 @@
 <template>
     <div class="feed">
         <CreateNoteForm />
-        <Notation class="notation" v-for="notation in notations" :key="notation.id" :sender="notation.sender"
-                  :text="notation.text" :image="notation.image !== ''"
-                  :likes="notation.likes" :com="notation.likes" :share="notation.share"/>
+        <Notation class="notation" v-for="notation in posts" :key="notation.id" :sender="notation.sender"
+                  :text="notation.text" :image="notation.image"
+                  :likes="notation.likes" :date="notation.date"/>
     </div>
 </template>
 
@@ -16,10 +16,14 @@
         components: {CreateNoteForm, Notation},
         data() {
             return {
-                notations: [
-                    {sender: 'Alexandr', text: 'AlexandrText', image: '', likes: 0, com: 0, share: 0},
-                    {sender: 'ReF0iL', text: 'ReF0iLText', image: 'dsaf', likes: 0, com: 0, share: 0},
-                    {sender: 'Maksim', text: 'MaxText', image: 'dsaf', likes: 0, com: 0, share: 0}
+                posts: [
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: 'profileImage.png', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
                 ]
             }
         }

@@ -23,7 +23,7 @@
     import Registration from "@/components/Pages/Registration";
     import Profile from "@/components/Pages/Profile";
     import RememberPassword from "@/components/Pages/RememberPassword";
-    import {mapGetters, mapActions} from 'vuex';
+    import {mapActions} from 'vuex';
 
     export default {
         name: 'Login',
@@ -36,7 +36,6 @@
             }
         },
         methods: {
-            ...mapGetters(['getToken']),
             ...mapActions(['exportToken']),
             rememberPassword() {
                 this.$router.replace({name: RememberPassword.name})

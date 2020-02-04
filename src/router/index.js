@@ -7,10 +7,10 @@ import Registration from "@/components/Pages/Registration";
 import Profile from "@/components/Pages/Profile";
 import Messages from "@/components/Pages/Messages";
 import Friends from "@/components/Pages/Friends";
-import Groups from "@/components/Pages/Groups";
 import Photo from "@/components/Pages/Photo";
 import RememberPassword from "@/components/Pages/RememberPassword";
 import NewPassword from "@/components/Pages/NewPassword";
+import ProfileEdit from "@/components/Pages/ProfileEdit";
 
 Vue.use(VueRouter);
 
@@ -19,17 +19,17 @@ export default new VueRouter({
         {
             path: '/profile',
             name: Profile.name,
-            component: Profile
+            component: Profile,
+        },
+        {
+            path:'/profile/edit',
+            name: ProfileEdit.name,
+            component: ProfileEdit
         },
         {
             path: '/photo',
             name: Photo.name,
             component: Photo
-        },
-        {
-            path: '/groups',
-            name: Groups.name,
-            component: Groups
         },
         {
             path: '/messages',

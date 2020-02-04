@@ -1,0 +1,181 @@
+<template>
+    <div class="profile">
+        <div class="profile__hero">
+            <div class="profile__hero-img">
+                <div class="profile__hero-img-crutch"></div>
+                <img src="../../assets/profileImage.png" alt="" class="circle-img">
+                <div class="profile__hero-img-crutch"></div>
+            </div>
+            <div class="info">
+                <div class="info-status">
+                    <span>Profile</span>
+                    <i class="fa fa-cog" aria-hidden="true"></i>
+                </div>
+                <div class="info-body">
+                    <div class="info-body__name">
+                        <span class="info-body__name-tag">&lt;Name&gt;</span>
+                        <span class="info-body__name-name">Чешко Илья</span>
+                        <span class="info-body__name-tag">&lt;/Name&gt;</span>
+                        <button class="btn info-body__btn">&lt;save_changes/&gt;</button>
+                    </div>
+                </div>
+                <div class="info-body__password">
+                    <label>
+                        &lt;old_password/&gt;
+                        <input type="password">
+                    </label>
+                    <label>
+                        &lt;new_password/&gt;
+                        <input type="password">
+                    </label>
+                    <label>
+                        &lt;repeat_password/&gt;
+                        <input type="password">
+                    </label>
+                    <button class="btn info-body__btn">&lt;edit_password/&gt;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: 'ProfileEdit',
+    }
+</script>
+
+<style lang="scss" scoped>
+    .profile {
+        min-width: 100vw;
+        min-height: calc(100vh + 60px);
+        background-color: var(--main-bg-color);
+
+        &__hero {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding-top: 40px;
+            margin-left: 10%;
+
+            &-img {
+                position: relative;
+
+                & img {
+                    position: absolute;
+                    z-index: 3;
+                    transform: translate(-15%, 25%);
+                }
+
+                &-crutch {
+                    z-index: 2;
+                    position: absolute;
+                    width: 750px;
+                    height: 150px;
+                    transform: translate(-25%, 175%) rotate(133.79deg);
+                    background: #4CB5F5;
+
+                    &:last-child {
+                        transform: translate(-25%, 175%) rotate(31.74deg);
+                    }
+                }
+            }
+        }
+
+        & .info {
+            width: 30%;
+            min-width: 340px;
+            &-status {
+                min-height: 40px;
+                background: #484848;
+                width: 100%;
+                border-radius: 32px 32px 0 0;
+                height: 10%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                & span {
+                    font-size: 24px;
+                    text-align: center;
+                    color: #dadada;
+                    margin-left: 25px;
+                }
+
+                & i {
+                    margin-right: 25px;
+                    font-size: 25px;
+                    color: #f1f1f1;
+                    transition: 2s ease-in-out;
+
+                    &:hover {
+                        transform: rotate(720deg);
+                    }
+                }
+            }
+
+            &-body {
+                background: #202020;
+                border-radius: 0 0 32px 32px;
+                &__password {
+                    align-self: center;
+                    width: 80%;
+                    margin: 35px 10%;
+                    padding: 25px 0;
+                    display: flex;
+                    flex-direction: column;
+                    background: #202020;
+                    color: #f1f1f1;
+                    border-radius: 32px;
+                    & label {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        margin-bottom: 10px;
+                        & input {
+                            margin-top: 5px;
+                            background: #c4c4c4;
+                            min-height: 30px;
+                            width: 50%;
+                            border-radius: 10px;
+                            padding-left: 15px;
+                        }
+                    }
+                }
+                &__btn {
+                    background: #6AB187;
+                    width: 40%;
+                    align-self: center;
+                    border-radius: 32px;
+                    min-height: 40px;
+                    margin-bottom: 15px;
+                }
+                &__name {
+                    display: flex;
+                    flex-direction: column;
+
+                    &-tag {
+                        color: #ea6a47;
+                        align-self: flex-start;
+                        font-size: 24px;
+                        padding: 15px;
+
+                        &:nth-child(3) {
+                            align-self: flex-end;
+                        }
+                    }
+
+                    &-name {
+                        color: #dadada;
+                        font-size: 36px;
+                        padding: 15px;
+                    }
+                }
+            }
+        }
+
+        &__friends {
+            margin: 10% auto;
+        }
+    }
+</style>

@@ -43,7 +43,7 @@
                     <input type="password" v-model="user.password" placeholder="Password" class="form-control">
                 </div>
                 <div class="form-group">
-                    <input type="password" v-model="user.password_repeat" placeholder="Repeat your password"
+                    <input type="password" v-model="password_repeat" placeholder="Repeat your password"
                            class="form-control">
                 </div>
                 <div class="btns">
@@ -80,12 +80,12 @@
                 error: '',
                 page: 1,
                 code: '',
+                password_repeat: '',
                 user: {
                     first_name: '',
                     last_name: '',
                     email: '',
                     password: '',
-                    password_repeat: '',
                     age: '',
                     gender: ''
                 }
@@ -112,9 +112,9 @@
             secondNext() {
                 if (this.user.email === '') {
                     this.error = 'Вы не ввели вашу почту!';
-                } else if (this.user.password === '' || this.user.password_repeat === '') {
+                } else if (this.user.password === '' || this.password_repeat === '') {
                     this.error = 'Вы не ввели пароль!';
-                } else if (this.user.password !== this.user.password_repeat) {
+                } else if (this.user.password !== this.password_repeat) {
                     this.error = 'Пароли отличаются друг от друга!'
                 } else {
                     this.error = '';
@@ -228,7 +228,7 @@
             display: block;
             position: absolute;
             left: 0;
-            top: 0px;
+            top: 0;
 
             &::after {
                 content: "";
