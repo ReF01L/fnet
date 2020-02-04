@@ -1,71 +1,74 @@
 <template>
     <div class="messages">
-        <form class="search-form">
-            <input class="search-form__input" type="text" placeholder="Dialog">
-            <input class="search-form__submit" type="submit" value="Search">
-        </form>
+        <SearchForm :place="'Dialog'"/>
         <div class="messages__box">
             <div class="dialogs">
-                <Dialog class="dialog" v-for="dialog in dialogs" :key="dialog.id"
+                <Dialog class="dialog" v-for="dialog in sortedMessages" :key="dialog.id"
                         :companion="dialog.companion"
                         :text="dialog.text"
                         :image="dialog.image"
                         :is-group="false"
                         :time="dialog.time"
+                        :count="dialog.count"
                 />
             </div>
             <div class="sort">
                 <ul>
-                    <li class="sort__type active">Все сообщения</li>
-                    <li class="sort__type">Непрочитанные</li>
-                    <li class="sort__type">Важные</li>
-                    <li class="sort__type">Избранные</li>
+                    <li data-active="1" class="sort__type active">Все сообщения</li>
+                    <li data-active="2" class="sort__type">Непрочитанные</li>
+                    <li data-active="3" class="sort__type">Важные</li>
+                    <li data-active="4" class="sort__type">Избранные</li>
                 </ul>
             </div>
         </div>
-        <Footer />
     </div>
 </template>
 
 <script>
     import Dialog from "@/components/Components/Dialog";
-    import Footer from "@/components/Footer";
+    import SearchForm from "@/components/Components/SearchForm";
 
     export default {
         name: "Messages",
-        components: {Footer, Dialog},
+        components: {SearchForm, Dialog},
         data() {
             return {
+                active: 2,
                 dialogs: [
                     {
                         companion: 'Alexandr',
                         text: 'Привет, хотел у тебя спросить. Как ты делал дз по линалу, геометрии и плюсам?',
                         image: '',
-                        time: '23:03'
+                        time: '25:52',
+                        count: 0
                     },
                     {
                         companion: 'ReF0iL',
                         text: 'Привет',
                         image: '',
-                        time: '23:03'
+                        time: '22:11',
+                        count: 3
                     },
                     {
                         companion: 'Max',
                         text: 'Привет',
                         image: '',
-                        time: '23:03'
+                        time: '20:19',
+                        count: 6
                     },
                     {
                         companion: 'Ilya',
                         text: 'Привет',
                         image: '',
-                        time: '23:03'
+                        time: '23:00',
+                        count: 1
                     },
                     {
                         companion: 'Vlad',
                         text: 'Привет',
                         image: '',
-                        time: '23:03'
+                        time: '23:01',
+                        count: 0
                     }
                 ]
             }
@@ -74,56 +77,39 @@
             document.querySelectorAll('.sort__type').forEach(elem => {
                 elem.addEventListener('click', () => {
                     document.querySelector('.active').classList.remove('active');
-                    elem.classList.add('active')
+                    elem.classList.add('active');
+                    this.active = elem.getAttribute('data-active');
                 })
             })
+        },
+        computed: {
+            sortedMessages() {
+                // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+                return this.dialogs.sort((m1, m2) => {
+                        return m1.time < m2.time ? 1 : -1;
+                    }
+                )
+            }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .messages__box {
-        display: flex;
-        justify-content: center;
+    .search-form {
+        width: 40%;
+        align-self: center;
     }
 
-    .search-form {
-        & input {
-            position: relative;
-            display: inline-block;
-            font-size: 20px;
-            box-sizing: border-box;
-            -webkit-transition: .5s;
-            -moz-transition: .5s;
-            -ms-transition: .5s;
-            -o-transition: .5s;
-            transition: .5s;
-        }
+    .messages {
+        padding-top: 85px;
+        min-height: calc(100vh - 85px);
+        background-color: var(--main-bg-color);
+        display: flex;
+        flex-direction: column;
 
-        &__input {
-            background-color: lightsalmon;
-            width: 340px;
-            height: 50px;
-            border: none;
-            outline: none;
-            padding: 0 25px;
-            border-radius: 25px 0 0 25px;
-        }
-
-        &__submit {
-            position: relative;
-            border-radius: 0 25px 25px 0;
-            height: 50px;
-            width: 150px;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            background-color: #ff9800;
-            color: #fff;
-
-            &:hover {
-                background-color: #ff5722;
-            }
+        &__box {
+            display: flex;
+            justify-content: center;
         }
     }
 
@@ -144,15 +130,18 @@
         position: relative;
         width: 10%;
         max-height: 200px;
+
         & ul {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+
             & li.sort__type {
                 padding: 7px 0;
                 margin: 3px 0;
                 width: 100%;
                 list-style: none;
+
                 &.active {
                     background-color: blue;
 

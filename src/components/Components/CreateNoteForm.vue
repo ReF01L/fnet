@@ -36,7 +36,7 @@
         }
 
         &-input {
-            background-color: cyan;
+            background-color: var(--status-input-bg-color);
             width: 40%;
             border: none;
             font-size: 16px;

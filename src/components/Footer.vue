@@ -25,10 +25,6 @@
                 <span class="content">Photos</span>
                 <i class="fa fa-camera" aria-hidden="true"></i>
             </li>
-            <li class="list-item" v-on:click="goToMusic">
-                <span class="content">Music</span>
-                <i class="fa fa-music" aria-hidden="true"></i>
-            </li>
         </ul>
     </footer>
 </template>
@@ -40,7 +36,6 @@
     import Friends from "@/components/Pages/Friends";
     import Groups from "@/components/Pages/Groups";
     import Photo from "@/components/Pages/Photo";
-    import Music from "@/components/Pages/Music";
 
     export default {
         name: 'Footer',
@@ -69,10 +64,6 @@
                 if (this.$router.currentRoute.name !== Photo.name)
                     this.$router.push({name: Photo.name})
             },
-            goToMusic() {
-                if (this.$router.currentRoute.name !== Music.name)
-                    this.$router.push({name: Music.name})
-            }
         }
     }
 </script>

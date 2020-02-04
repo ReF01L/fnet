@@ -1,271 +1,218 @@
 <template>
     <div class="profile">
-        <div class="profile-header">
-            <div class="profile-header__hero">
-                <div class="profile-header__hero-leftside">
-                    <span class="profile-header__hero-leftside__info">Followers 123</span>
-                    <span class="profile-header__hero-leftside__info">Friend 222</span>
-                    <span class="profile-header__hero-leftside__info">Online 89</span>
-                </div>
-                <img src="../../assets/profileImage.png" alt="" class="profile-header__img" draggable="false">
-                <div class="profile-header__hero-rightside">
-                    <span class="profile-header__hero-rightside__info">182 Music</span>
-                    <span class="profile-header__hero-rightside__info">12 Photo</span>
-                    <span class="profile-header__hero-rightside__info">46 Groups</span>
-                </div>
+        <div class="profile__hero">
+            <div class="profile__hero-img">
+                <div class="profile__hero-img-crutch"></div>
+                <img src="../../assets/profileImage.png" alt="" class="circle-img">
+                <div class="profile__hero-img-crutch"></div>
             </div>
-            <div class="profile-header__status">
-                <!--                eslint-disable-next-line-->
-                <span v-show="!showStatus" class="profile-header__status-text">{{status.length === 0 ? 'Ты без статуса' : status.length <= 50 ? status : status.substring(0, 50) + ' ...' }}</span>
-                <span v-show="showStatus" class="profile-header__status-text-full">
-                    {{ status }}
-                </span>
-                <button v-show="status.length !== 0 && status.length >= 50" v-on:click="showStatus = !showStatus"
-                        class="profile-header__status-text__btn">{{ showStatus ? 'Hide' : 'Show all'}}
-                </button>
-                <div class="profile-header__status-form">
-                    <input maxlength="220" v-model="status" type="text" class="profile-header__status-form-input"
-                           placeholder="Input your status: ">
-                    <button class="profile-header__status-form-send">
-                        <i class="fa fa-check" aria-hidden="true"></i>
-                    </button>
+            <div class="info">
+                <div class="info-status">
+                    <span>Profile</span>
+                    <i class="fa fa-cog" aria-hidden="true"></i>
                 </div>
-            </div>
-            <div class="profile-header__buttons">
-                <button class="profile-header__buttons-add">Add as friend</button>
-                <button class="profile-header__buttons-message">
-                    <i class="fa fa-comment-o" aria-hidden="true"></i>
-                </button>
+                <div class="info-body">
+                    <div class="info-body__name">
+                        <span class="info-body__name-tag">&lt;Name&gt;</span>
+                        <span class="info-body__name-name">Чешко Илья</span>
+                        <span class="info-body__name-tag">&lt;/Name&gt;</span>
+                    </div>
+                    <div class="info-body__status">
+                        <span class="info-body__status-tag">&lt;Status&gt;</span>
+                        <span class="info-body__status-status">Программирование на С похоже на быстрые танцы на только что отполированном полу людей с острыми бритвами в руках</span>
+                        <span class="info-body__status-tag">&lt;/Status&gt;</span>
+                    </div>
+                </div>
+                <div class="info-btns">
+                    <button class="btn info-btns-btn">&lt;Get_Chat/&gt;</button>
+                    <button class="btn info-btns-btn">&lt;Add_Friend/&gt;</button>
+                </div>
             </div>
         </div>
-        <div class="profile-hero">
-            <CreateNoteForm/>
-            <Notation class="notation" v-for="notation in notations" :key="notation.id" :sender="notation.sender"
-                      :text="notation.text" :image="notation.image !== ''" :music="notation.music !== ''"
-                      :likes="notation.likes" :com="notation.likes" :share="notation.share"/>
-        </div>
-        <Footer />
+        <ProfileFriends class="profile__friends"/>
+        <Notation class="notation" v-for="post in posts" :key="post.id" :sender="post.sender"
+                  :text="post.text" :image="post.image"
+                  :likes="post.likes" :date="post.date"/>
     </div>
 </template>
 
 <script>
+    import ProfileFriends from "@/components/Components/ProfileFriends";
     import Notation from "@/components/Components/Notation";
-    import Footer from "@/components/Footer";
-    import CreateNoteForm from "@/components/Components/CreateNoteForm";
 
     export default {
         name: 'Profile',
-        components: {CreateNoteForm, Footer, Notation},
+        components: {Notation, ProfileFriends},
         data() {
             return {
-                status: '',
-                showStatus: false,
-                notations: [
-                    {sender: 'Alexandr', text: 'AlexandrText;', image: 'sdaf', music: 'df', likes: 0, com: 0, share: 0},
-                    {sender: 'ReF0iL', text: 'ReF0iLText', image: 'dsaf', music: 'df', likes: 0, com: 0, share: 0},
-                    {sender: 'Maksim', text: 'MaxText', image: 'dsaf', music: 'df', likes: 0, com: 0, share: 0}
-                ],
+                posts: [
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: 'profileImage.png', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
+                ]
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
-    .notation {
-        margin-left: 45px;
-        padding-bottom: 20px;
-        margin-top: 80px;
-        display: flex;
-        min-height: 120px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border-left: 2px solid #2c3e50;
-        border-bottom: 2px solid #2c3e50;
-        width: 90%;
-
-        &:first-child {
-            margin-top: 0;
-        }
-    }
-
     .profile {
-        --status-input-bg-color: cyan;
-        --status-btn-color: lightblue;
-        --status-short-text-color: #2c3e50;
-        --status-full-text-color: #555555;
-        --basic-btn-color: darkcyan;
-        --basic-placeholder-color: #555555;
-
-        width: 100%;
-        height: 100%;
+        min-height: calc(100vh + 60px);
         background-color: var(--main-bg-color);
-
-        &-header {
-            padding-top: 50px;
+        &__hero {
+            width: 100%;
             display: flex;
-            flex-direction: column;
+            justify-content: space-around;
+            padding-top: 40px;
+            margin-left: 10%;
 
-            &__img {
-                min-width: 120px;
-                min-height: 80px;
-                max-width: 250px;
-                max-height: 250px;
-                border-radius: 25px;
+            &-img {
+                position: relative;
+
+                & img {
+                    position: absolute;
+                    z-index: 3;
+                    transform: translate(-50%);
+                }
+
+                &-crutch {
+                    z-index: 2;
+                    position: absolute;
+                    width: 750px;
+                    height: 150px;
+                    transform: translate(-50%, 100%) rotate(133.79deg);
+                    background: #4CB5F5;
+                    &:last-child {
+                        transform: translate(-50%, 100%) rotate(31.74deg);
+                    }
+                }
             }
-
-            &__hero {
-                display: flex;
+        }
+        & .info {
+            width: 30%;
+            min-width: 340px;
+            margin-right: 10%;
+            &-status {
+                min-height: 40px;
+                background: #484848;
                 width: 100%;
-                justify-content: space-evenly;
-                align-items: center;
-
-                &-leftside {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-end;
-
-                    &__info {
-                        margin-top: 15px;
-
-                        &:hover {
-                            cursor: pointer;
-                        }
-                    }
-                }
-
-                &-rightside {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: flex-end;
-
-                    &__info {
-                        margin-top: 15px;
-
-                        &:hover {
-                            cursor: pointer;
-                        }
-                    }
-                }
-            }
-
-            &__status {
-                margin-top: 25px;
+                border-radius: 32px 32px 0 0;
+                height: 10%;
                 display: flex;
-                flex-direction: column;
                 align-items: center;
+                justify-content: space-between;
 
-                &-form {
-                    margin-top: 15px;
-                    display: flex;
-                    justify-content: center;
-
-                    &-send {
-                        width: 35px;
-                        border: none;
-                        border-bottom-right-radius: 10px;
-                        border-top-right-radius: 10px;
-                        background-color: var(--status-btn-color);
-                        opacity: 0.8;
-
-                        &:hover {
-                            opacity: 1;
-                            cursor: pointer;
-                        }
-                    }
-
-                    &-input {
-                        width: 80%;
-                        background-color: var(--status-input-bg-color);
-                        border: none;
-                        padding: 15px;
-                        border-bottom-left-radius: 10px;
-                        border-top-left-radius: 10px;
-                        font-size: 18px;
-
-                        &::placeholder {
-                            font-size: 17px;
-                            font-style: italic;
-                        }
-                    }
+                & span {
+                    font-size: 24px;
+                    text-align: center;
+                    color: #dadada;
+                    margin-left: 25px;
                 }
 
-                &-text {
-                    font-size: 13px;
-                    color: var(--status-short-text-color);
-                    margin: 15px;
-                    font-weight: 600;
-
-                    &-full {
-                        font-size: 14px;
-                        color: var(--status-full-text-color);
-                        margin: 15px;
-                        font-weight: 600;
-                        width: 30%;
-                    }
-
-                    &__btn {
-                        background-color: #00bebe;
-                        font-weight: 700;
-                        width: 120px;
-                        padding: 8px 20px;
-                        border: 2px solid #2c3e50;
-                        border-radius: 1px;
-                        -webkit-transition: 0.5s;
-                        -moz-transition: 0.5s;
-                        -ms-transition: 0.5s;
-                        -o-transition: 0.5s;
-                        transition: 0.5s;
-
-                        &:hover {
-                            cursor: pointer;
-                            background-color: rgba(0, 139, 139, 0.4);
-                        }
-
-                        &:active {
-                            background-color: rgba(0, 88, 88, 1);
-                        }
-                    }
-                }
-            }
-
-            &__buttons {
-                margin-top: 15px;
-                height: 35px;
-
-                & button {
-                    border: none;
-                    border-radius: 7%;
-                    background-color: var(--basic-btn-color);
-                    opacity: 0.8;
+                & i {
+                    margin-right: 25px;
+                    font-size: 25px;
+                    color: #f1f1f1;
+                    transition: 2s ease-in-out;
 
                     &:hover {
                         cursor: pointer;
-                        opacity: 1;
+                        transform: rotate(720deg);
+                    }
+                }
+            }
+
+            &-body {
+                background: #202020;
+                border-radius: 0 0 32px 32px;
+                &__name {
+                    display: flex;
+                    flex-direction: column;
+
+                    &-tag {
+                        color: #ea6a47;
+                        align-self: flex-start;
+                        font-size: 24px;
+                        padding: 15px;
+
+                        &:last-child {
+                            align-self: flex-end;
+                        }
                     }
 
-                    &:focus {
-                        outline: none;
+                    &-name {
+                        color: #dadada;
+                        font-size: 36px;
+                        padding: 15px;
                     }
                 }
 
-                &-add {
-                    margin-right: 5px;
-                    height: 100%;
-                    width: 25%;
-                    font-size: 20px;
-                }
+                &__status {
+                    display: flex;
+                    flex-direction: column;
+                    &-tag {
+                        color: #4cb5f5;
+                        align-self: flex-start;
+                        font-size: 24px;
+                        padding: 15px;
 
-                &-message {
-                    height: 100%;
-                    font-size: 20px;
-                    width: 35px;
+                        &:last-child {
+                            align-self: flex-end;
+                        }
+                    }
+
+                    &-status {
+                        font-size: 24px;
+                        color: #dadada;
+                        padding: 15px;
+                        margin: 0 auto;
+                    }
+                }
+            }
+
+            &-btns {
+                margin-top: 15px;
+
+                &-btn {
+                    background: #202020;
+                    width: 48%;
+                    height: 64px;
+                    font-size: 24px;
+                    transition: 0.5s;
+
+                    &:hover {
+                        cursor: pointer;
+                        transform: scale(1.05);
+                    }
+
+                    &:first-child {
+                        color: #b3c100;
+                        border-radius: 25px 0 0 25px;
+                        margin-right: 10px;
+                    }
+
+                    &:last-child {
+                        color: #dbae58;
+                        border-radius: 0 25px 25px 0;
+                    }
                 }
             }
         }
-
-        &-hero {
-            margin-top: 120px;
+        &__friends {
+            margin: 10% auto;
+        }
+        & .notation {
+            margin-left: 45px;
+            padding-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
         }
     }
 </style>
