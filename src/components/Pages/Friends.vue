@@ -115,6 +115,11 @@
                             padding: 5px 15px 0;
                             bottom: 5%;
                             right: 25%;
+                            transition: 0.1s;
+                            &:hover {
+                                cursor: pointer;
+                                font-size: 50px;
+                            }
                         }
                     }
                 }
@@ -124,7 +129,7 @@
                 display: flex;
                 flex-wrap: wrap;
                 &-card {
-                    margin: 15px;
+                    margin: 0 15px 30px;
                     flex-basis: 5%;
                 }
             }

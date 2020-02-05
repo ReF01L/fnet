@@ -1,25 +1,26 @@
 <template>
+<!--    TODO: стилизовать футер-->
     <footer class="footer">
         <ul class="list">
-            <li class="list-item" v-on:click="goToProfile">
+            <li class="list-item" @click="goToProfile">
                 <span class="content">Main Page</span>
                 <i class="fa fa-home" aria-hidden="true"></i>
             </li>
-            <li class="list-item" v-on:click="goToFeed">
+            <li class="list-item" @click="goToFeed">
                 <span class="content">Feeds</span>
                 <i class="fa fa-newspaper-o" aria-hidden="true"></i>
             </li>
-            <li class="list-item" v-on:click="goToMessages">
+            <li class="list-item" @click="goToMessages">
                 <span class="content">Messages</span>
                 <i class="fa fa-comments" aria-hidden="true"></i>
             </li>
-            <li class="list-item" v-on:click="goToFriends">
+            <li class="list-item" @click="goToFriends">
                 <span class="content">Friends</span>
                 <i class="fa fa-user" aria-hidden="true"></i>
             </li>
-            <li class="list-item" v-on:click="goToPhoto">
-                <span class="content">Photos</span>
-                <i class="fa fa-camera" aria-hidden="true"></i>
+            <li class="list-item" @click="exit">
+                <span class="content">Sign out</span>
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
             </li>
         </ul>
     </footer>
@@ -30,7 +31,6 @@
     import Feed from "@/components/Pages/Feed";
     import Messages from "@/components/Pages/Messages";
     import Friends from "@/components/Pages/Friends";
-    import Photo from "@/components/Pages/Photo";
 
     export default {
         name: 'Footer',
@@ -51,10 +51,10 @@
                 if (this.$router.currentRoute.name !== Friends.name)
                     this.$router.push({name: Friends.name})
             },
-            goToPhoto() {
-                if (this.$router.currentRoute.name !== Photo.name)
-                    this.$router.push({name: Photo.name})
-            },
+            // TODO: реализовать выход
+            exit() {
+                alert("Считай. что ты вышел")
+            }
         }
     }
 </script>
