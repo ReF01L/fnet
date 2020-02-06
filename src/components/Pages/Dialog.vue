@@ -66,7 +66,7 @@
 <style lang="scss" scoped>
     .dialog {
         padding-top: 15px;
-        max-height: 100vh;
+        min-height: 100vh;
         background-color: var(--main-bg-color);
         width: 100%;
 

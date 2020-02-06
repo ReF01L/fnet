@@ -60,7 +60,7 @@
     .friends {
         padding-top: 40px;
         width: 100vw;
-        min-height: calc(100vh + 60px);
+        min-height: 100vh;
         background-color: var(--main-bg-color);
         &__search {
             margin-bottom: 20px;
@@ -125,12 +125,36 @@
                 }
             }
             & .friends__current {
-                width: 60%;
+                margin-left: 10%;
+                width: 100%;
                 display: flex;
                 flex-wrap: wrap;
                 &-card {
-                    margin: 0 15px 30px;
-                    flex-basis: 5%;
+                    margin: 15px;
+                }
+            }
+        }
+    }
+    @media (max-width: 1645px) {
+        .friends {
+            &__place {
+                & .friends__current {
+                    &-card {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 1275px) {
+        .friends {
+            &__place {
+                & .friends__request {
+                    display: none;
+                }
+                & .friends__current {
+                    width: 100%;
+                    margin: auto;
                 }
             }
         }

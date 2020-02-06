@@ -10,7 +10,6 @@
             <div class="header__mode">
                 <span>&lt;properties/&gt;</span>
                 <span>&lt;properties/&gt;</span>
-                <span>&lt;properties/&gt;</span>
             </div>
         </div>
         <Notation class="notation" v-for="notation in posts" :key="notation.id" :sender="notation.sender"
@@ -149,6 +148,35 @@
             justify-content: center;
             width: 90%;
             margin: 35px auto;
+        }
+    }
+    @media (max-width: 630px) {
+        .feed {
+            .header {
+                width: 100%;
+                &__search {
+                    & label {
+                        justify-content: space-between;
+                        & input {
+                            width: 70%;
+                        }
+                        & span {
+                            margin: auto;
+                        }
+                    }
+                }
+
+                &__mode {
+                    justify-content: space-around;
+                    & span {
+                        margin: 5px 0;
+                    }
+                }
+            }
+
+            .notation {
+                width: 100%;
+            }
         }
     }
 </style>

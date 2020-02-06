@@ -99,8 +99,20 @@
             }
             &__box {
                 .dialogs {
+                    margin: auto;
                     .dialog {
                         padding: 10px;
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 440px) {
+        .messages {
+            &__box {
+                .dialogs {
+                    .dialog {
+                        padding: 0;
                     }
                 }
             }

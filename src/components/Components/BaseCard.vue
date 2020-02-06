@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card__title">
             <span class="card__title-title">{{name}}</span>
-            <span v-if="status !== ''" class="card__title-status">&lt;{{status}}/&gt;</span>
+            <span class="card__title-status">&lt;{{status !== '' ? 'online' : 'offline'}}/&gt;</span>
         </div>
         <div class="card__body">
             <div class="card__body__img">
@@ -28,7 +28,6 @@
 
 <style lang="scss" scoped>
     .card {
-        width: 50%;
         &__title {
             background: #484848;
             color: #f1f1f1;
@@ -73,6 +72,75 @@
                     margin: 10px 0;
                     &:last-child {
                         color: #D32D41;
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 1645px) {
+        .card {
+            &__title {
+                & span {
+                    margin: 0 20px;
+                }
+            }
+            &__body {
+                &__interaction {
+                    padding: 60px;
+                    & span {
+                        display: block;
+                        width: 100%;
+                        color: #B3C100;
+                        padding: 10px 15px;
+                        background: #484848;
+                        border-radius: 30px;
+                        margin: 10px 0;
+                        &:last-child {
+                            color: #D32D41;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 510px) {
+        .card {
+            &__body {
+                &__img {
+                    &-img {
+                        width: 120px;
+                        height: 120px;
+                        margin-left: 15%;
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 373px) {
+        .card {
+            font-size: 12px;
+            &__body {
+                &__img {
+                    display: none;
+                    &-img {
+                        width: 120px;
+                        height: 120px;
+                        margin-left: 15%;
+                    }
+                }
+                &__interaction {
+                    padding: 20px;
+                    width: 100%;
+                    & span {
+                        width: 100%;
+                        color: #B3C100;
+                        padding: 10px 15px;
+                        background: #484848;
+                        border-radius: 30px;
+                        margin: 10px auto;
+                        &:last-child {
+                            color: #D32D41;
+                        }
                     }
                 }
             }
