@@ -18,7 +18,7 @@ Vue.use(VueRouter);
 export default new VueRouter({
     routes: [
         {
-            path: '/profile',
+            path: '/profile/:id',
             name: Profile.name,
             component: Profile,
         },
@@ -38,7 +38,7 @@ export default new VueRouter({
             component: Messages
         },
         {
-            path: '/messages/dialog',
+            path: '/messages/dialog/:hero_id/:receiver_id',
             name: Dialog.name,
             component: Dialog
         },

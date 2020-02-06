@@ -12,7 +12,7 @@
         </div>
         <div class="dialog__main">
             <Message v-for="message in messages" :key="message.id"
-                     :date="message.date" :img="message.img" :message="message.message"/>
+                     :date="message.date" :img="'profileImage.png'" :message="message.message"/>
         </div>
         <div class="commit">
             <label>
@@ -29,37 +29,22 @@
     export default {
         name: "Dialog",
         components: {Message},
-        props: {
-            friend: {
-                type: String,
-                default: 'Username'
-            },
-            status: {
-                type: String,
-                default: 'online'
-            }
-        },
         data() {
             return {
-                messages: [
-                    {img: 'profileImage.png', message: ')', date: '<16:40 { 1 feb 2020 }/>'},
-                    {
-                        img: 'profileImage.png',
-                        message: 'Может ты сам лох!??????????!?!?!?!? \n' +
-                            'ыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы',
-                        date: '<16:40 { 1 feb 2020 }/>'
-                    },
-                    {img: 'profileImage.png', message: 'Привет ты лох)', date: '<16:40 { 1 feb 2020 }/>'},
-                    {img: 'profileImage.png', message: 'Привет ты лох)', date: '<16:40 { 1 feb 2020 }/>'},
-                    {img: 'profileImage.png', message: 'Привет ты лох)', date: '<16:40 { 1 feb 2020 }/>'},
-                    {img: 'profileImage.png', message: 'Привет ты лох)', date: '<16:40 { 1 feb 2020 }/>'},
-                    {img: 'profileImage.png', message: 'Привет ты лох)', date: '<16:40 { 1 feb 2020 }/>'},
-                    {img: 'profileImage.png', message: 'Привет ты лох)', date: '<16:40 { 1 feb 2020 }/>'},
-                    {img: 'profileImage.png', message: 'Привет ты лох)', date: '<16:40 { 1 feb 2020 }/>'},
-                    {img: 'profileImage.png', message: 'Привет ты лох)', date: '<16:40 { 1 feb 2020 }/>'},
-                ]
+                messages: []
             }
         },
+        mounted() {
+            window.axios
+                .get(`http://20.188.3.202:5000/api/messages/${this.route.params.receiver_id}?token=${localStorage.getItem('token')}`)
+                .then(response => {
+                    // TODO: ЧТО Я ПОЛУЧАЮ?!
+                    this.messages = response.data.messages;
+                })
+                .catch(error => {
+                    alert("Плохое соединение с сервером\n" + error);
+                })
+        }
     }
 </script>
 

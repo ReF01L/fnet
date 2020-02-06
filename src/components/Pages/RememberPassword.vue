@@ -124,7 +124,6 @@
             background: #484848;
             border-radius: 10px;
             padding: 50px;
-            /*TODO: ошибка*/
             &-error {
                 margin: 10px;
                 color: #EA6A47;

@@ -58,7 +58,7 @@
                                 localStorage.setItem('user_id', response.data.user_id);
                                 localStorage.setItem('token', response.data.token);
 
-                                this.$router.replace({name: Profile.name})
+                                this.$router.replace({name: Profile.name, params: {id: localStorage.getItem('user_id')}});
                             } catch (e) {
                                 alert('У тебя хуёвое локальное хранилище: \n' + e)
                             }
@@ -67,8 +67,6 @@
                         }
                     })
                     .catch(error => {
-                        // eslint-disable-next-line no-console
-                        console.log(error);
                         alert("Хуёвое соединение с сервером: \n" + error);
                     });
             },
@@ -142,7 +140,6 @@
             background: #484848;
             border-radius: 10px;
             padding: 50px;
-            /*TODO: ошибка*/
             &-error {
                 margin: 10px;
                 color: #EA6A47;

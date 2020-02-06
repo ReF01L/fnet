@@ -2,7 +2,6 @@
     <div class="card">
         <div class="card__title">
             <span class="card__title-title">{{name}}</span>
-            <span class="card__title-status">&lt;{{status !== '' ? 'online' : 'offline'}}/&gt;</span>
         </div>
         <div class="card__body">
             <div class="card__body__img">
@@ -21,7 +20,6 @@
         name: "BaseCard",
         props: {
             name: String,
-            status: String,
         }
     }
 </script>

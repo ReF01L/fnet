@@ -1,22 +1,25 @@
 <template>
     <div class="CarouselItem">
-        <img v-for="item in item_data" :key="item.id" class="circle-img" :src="require('../../assets/' + item.img)" alt="">
+        <img @click="friend" class="circle-img" :src="require('../../assets/profileImage.png')" alt="">
     </div>
 </template>
 
 <script>
+    import Profile from "@/components/Pages/Profile";
+
     export default {
         name: "CarouselItem",
         props: {
-            item_data: {
-                type: Array,
-                default: () => {}
-            }
+            item_data: Object
         },
         data() {
             return {}
         },
-        computed: {}
+        methods: {
+            friend() {
+                this.$router.replace({name: Profile.name, params: {id: this.item_data.friend_id.toString()}});
+            }
+        }
     }
 </script>
 
@@ -25,6 +28,9 @@
         width: 15%;
         height: 150px;
         margin: 0 15px;
+        &:hover {
+            cursor: pointer;
+        }
     }
     @media (max-width: 1500px) {
         .circle-img {

@@ -1,5 +1,4 @@
 <template>
-    <!--    TODO: v-on:keyup.enter="" - При нажатии на enter -> следующий шаг-->
     <main>
         <div v-show="page === 1" class="register-first">
             <h2>&lt;Registration_1/&gt;</h2>
@@ -15,7 +14,6 @@
                     <input type="text" v-model="user.birth_date" onblur="(this.type='text')"
                            onfocus="(this.type='date')"
                            placeholder="date_of_birth" class="from-control">
-                    <!--                    TODO: icon design-->
                     <i class="far fa-calendar-check"></i>
                 </div>
                 <div class="radio-group">
@@ -148,7 +146,7 @@
                                     localStorage.setItem('user_id', response.data.user_id);
                                     localStorage.setItem('token', response.data.token);
 
-                                    this.$router.replace({name: Profile.name})
+                                    this.$router.replace({name: Profile.name, params: {id: localStorage.getItem('user_id')}});
                                 } catch (e) {
                                     alert('У тебя хуёвое локальное хранилище: \n' + e)
                                 }
@@ -338,7 +336,7 @@
                 h4 {
                     margin-top: 20px;
                     font-size: 13px;
-                    color: #0091d5;
+                    color: #F1F1F1;
                 }
 
                 & .register-form {

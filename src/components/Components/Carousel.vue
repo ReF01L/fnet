@@ -19,14 +19,8 @@
         name: "Carousel",
         components: {CarouselItem},
         props: {
-            carousel_data: {
-                type: Array,
-                default: () => []
-            },
-            interval: {
-                type: Number,
-                default: 0
-            }
+            carousel_data: Array,
+            interval: Number
         },
         data() {
             return {

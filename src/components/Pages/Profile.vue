@@ -14,25 +14,26 @@
                 <div class="info-body">
                     <div class="info-body__name">
                         <span class="info-body__name-tag">&lt;Name&gt;</span>
-                        <span class="info-body__name-name">Чешко Илья</span>
+                        <span class="info-body__name-name">{{user.name}}</span>
                         <span class="info-body__name-tag">&lt;/Name&gt;</span>
                     </div>
                     <div class="info-body__status">
                         <span class="info-body__status-tag">&lt;Status&gt;</span>
-                        <span class="info-body__status-status">Программирование на С похоже на быстрые танцы на только что отполированном полу людей с острыми бритвами в руках</span>
+                        <span class="info-body__status-status">{{user.status}}</span>
                         <span class="info-body__status-tag">&lt;/Status&gt;</span>
                     </div>
                 </div>
-                <div class="info-btns">
+                <div v-if="!isMe" class="info-btns">
                     <button class="btn info-btns-btn">&lt;Get_Chat/&gt;</button>
-                    <button class="btn info-btns-btn">&lt;Add_Friend/&gt;</button>
+                    <button v-show="!isFriend" @click="add_friend" class="btn info-btns-btn">&lt;Add_Friend/&gt;
+                    </button>
                 </div>
             </div>
         </div>
-        <ProfileFriends class="profile__friends"/>
-        <Notation class="notation" v-for="post in posts" :key="post.id" :sender="post.sender"
-                  :text="post.text" :image="post.image"
-                  :likes="post.likes" :date="post.date"/>
+        <ProfileFriends :slider-items="friends" class="profile__friends"/>
+        <Notation class="notation" v-for="post in posts" :key="post.id" :sender="user.name"
+                  :text="post.text" :image="post.image" :views="post.views_count"
+                  :likes="post.likes_count" :date="post.time" :id="post.id"/>
     </div>
 </template>
 
@@ -45,16 +46,81 @@
         components: {Notation, ProfileFriends},
         data() {
             return {
-                posts: [
-                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: 'profileImage.png', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
-                    {sender: 'Салушкин Дмитрий', text: 'laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
-                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
-                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
-                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
-                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
-                    {sender: 'Салушкин Дмитрий', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum', image: '', likes: 0, views: 1, date: '<16:40 { 1 feb 2020 }/>'},
-                ]
+                posts: [],
+                friends: [
+                    {friend_id: 0, first_name: '', last_name: ''},
+                ],
+                user: {
+                    name: '',
+                    status: '',
+                    id: ''
+                },
+                main_friends: []
             }
+        },
+        computed: {
+            isFriend() {
+                let t = false;
+                this.main_friends.forEach((friend) => {
+                    if (this.$route.params.id == friend.friend_id)
+                        t = true;
+                });
+                if (!this.isMe) {
+                    document.querySelectorAll('.info-btns-btn').forEach(elem => {
+                        elem.style.borderRadius = '25px';
+                        elem.style.width = '100%';
+                    });
+                }
+                return t;
+            },
+            isMe() {
+                return this.user.id === this.$route.params.id;
+            }
+        },
+        methods: {
+            add_friend() {
+                window.axios
+                    .post(`http://20.188.3.202:5000/api/friends/${this.$route.params.id}`, {token: localStorage.getItem('token')})
+                    .catch(error => {
+                        alert("Отсутствует соединение с сервером: \n" + error);
+                    });
+            },
+            fetch() {
+                window.axios
+                    .get('http://20.188.3.202:5000/api/users/' + this.$route.params.id)
+                    .then(response => {
+                        this.user.name = `${response.data.last_name} ${response.data.first_name}`;
+                        this.user.status = `${response.data.status}` === 'null' ? ' ' : response.data.status;
+                        window.axios
+                            .get('http://20.188.3.202:5000/api/friends/' + this.$route.params.id)
+                            .then(response => {
+                                this.friends = response.data.friends;
+                            });
+                        window.axios
+                            .get('http://20.188.3.202:5000/api/posts/' + this.$route.params.id)
+                            .then(response => {
+                                this.posts = response.data.posts;
+                            });
+                    })
+                    .catch(error => {
+                        alert("Отсутствует соединение с сервером: \n" + error);
+                    });
+            }
+        },
+        mounted() {
+            window.axios
+                .get(`http://20.188.3.202:5000/api/friends/${localStorage.getItem('user_id')}`)
+                .then(response => {
+                    this.main_friends = response.data.friends;
+                    this.fetch();
+                })
+                .catch(error => {
+                    alert("Отсутствует соединение с сервером: \n" + error);
+                });
+            this.user.id = localStorage.getItem('user_id');
+        },
+        watch: {
+            '$route': 'fetch'
         }
     }
 </script>
@@ -62,7 +128,9 @@
 <style lang="scss" scoped>
     .profile {
         min-height: calc(100vh + 60px);
+        width: 100vw;
         background-color: var(--main-bg-color);
+
         &__hero {
             width: 100%;
             display: flex;
@@ -72,11 +140,13 @@
 
             &-img {
                 position: relative;
+
                 & img {
                     position: absolute;
                     z-index: 3;
                     transform: translate(-50%);
                 }
+
                 &-crutch {
                     z-index: 2;
                     position: absolute;
@@ -91,10 +161,12 @@
                 }
             }
         }
+
         & .info {
             width: 30%;
             min-width: 340px;
             margin-left: 10%;
+
             &-status {
                 min-height: 40px;
                 background: #484848;
@@ -124,6 +196,7 @@
                     }
                 }
             }
+
             &-body {
                 background: #202020;
                 border-radius: 0 0 32px 32px;
@@ -173,23 +246,28 @@
                     }
                 }
             }
+
             &-btns {
                 margin-top: 15px;
+
                 &-btn {
                     background: #202020;
                     width: 48%;
                     height: 64px;
                     font-size: 24px;
                     transition: 0.5s;
+
                     &:hover {
                         cursor: pointer;
-                        transform: scale(1.05);
+                        transform: scale(1.03);
                     }
+
                     &:first-child {
                         color: #b3c100;
                         border-radius: 25px 0 0 25px;
                         margin-right: 10px;
                     }
+
                     &:last-child {
                         color: #dbae58;
                         border-radius: 0 25px 25px 0;
@@ -197,9 +275,12 @@
                 }
             }
         }
+
         &__friends {
+            padding-top: 35px;
             margin: 10% auto;
         }
+
         & .notation {
             margin-left: 45px;
             padding-bottom: 20px;
@@ -210,20 +291,24 @@
             width: 90%;
         }
     }
+
     @media (max-width: 1375px) {
         .profile {
             &__hero {
                 margin: auto;
             }
+
             & .info {
                 margin-left: 30%;
             }
+
             & .notation {
                 margin: auto;
                 width: 100%;
             }
         }
     }
+
     @media (max-width: 1225px) {
         .profile {
             &__hero {
@@ -232,15 +317,18 @@
                 justify-content: center;
                 align-items: center;
                 margin-bottom: 35px;
+
                 &-img {
                     & img {
                         transform: translate(0);
                         position: relative;
                     }
+
                     &-crutch {
                         display: none;
                     }
                 }
+
                 & .info {
                     width: 100%;
                     margin: 25px auto auto;
@@ -251,6 +339,7 @@
             display: none;
         }
     }
+
     @media (max-width: 760px) {
         .profile {
             &__hero {
@@ -260,6 +349,7 @@
                         height: 300px;
                     }
                 }
+
                 & .info {
                     width: 90%;
                 }

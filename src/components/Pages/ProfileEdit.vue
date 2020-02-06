@@ -47,41 +47,35 @@
 
 <style lang="scss" scoped>
     .profile {
-        min-width: 100vw;
-        min-height: calc(100vh + 60px);
+        width: 100%;
+        min-height: 100vh;
         background-color: var(--main-bg-color);
-
         &__hero {
             width: 100%;
             display: flex;
             justify-content: space-around;
             padding-top: 40px;
             margin-left: 10%;
-
             &-img {
                 position: relative;
-
                 & img {
                     position: absolute;
                     z-index: 3;
-                    transform: translate(-15%, 25%);
+                    transform: translate(-50%, 25%);
                 }
-
                 &-crutch {
                     z-index: 2;
                     position: absolute;
                     width: 750px;
                     height: 150px;
-                    transform: translate(-25%, 175%) rotate(133.79deg);
+                    transform: translate(-50%, 175%) rotate(133.79deg);
                     background: #4CB5F5;
-
                     &:last-child {
-                        transform: translate(-25%, 175%) rotate(31.74deg);
+                        transform: translate(-50%, 175%) rotate(31.74deg);
                     }
                 }
             }
         }
-
         & .info {
             width: 30%;
             min-width: 340px;
@@ -94,26 +88,22 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-
                 & span {
                     font-size: 24px;
                     text-align: center;
                     color: #dadada;
                     margin-left: 25px;
                 }
-
                 & i {
                     margin-right: 25px;
                     font-size: 25px;
                     color: #f1f1f1;
                     transition: 2s ease-in-out;
-
                     &:hover {
                         transform: rotate(720deg);
                     }
                 }
             }
-
             &-body {
                 background: #202020;
                 border-radius: 0 0 32px 32px;
@@ -149,6 +139,11 @@
                     border-radius: 32px;
                     min-height: 40px;
                     margin-bottom: 15px;
+                    transition: .5s;
+                    &:hover {
+                        cursor: pointer;
+                        transform: scale(1.03);
+                    }
                 }
                 &__name {
                     display: flex;
@@ -173,9 +168,73 @@
                 }
             }
         }
-
         &__friends {
             margin: 10% auto;
+        }
+    }
+    @media (max-width: 1375px) {
+        .profile {
+            &__hero {
+                margin: auto;
+            }
+            & .info {
+                margin-left: 30%;
+            }
+            & .notation {
+                margin: auto;
+                width: 100%;
+            }
+        }
+    }
+    @media (max-width: 1225px) {
+        .profile {
+            &__hero {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 35px;
+                &-img {
+                    & img {
+                        transform: translate(0);
+                        position: relative;
+                    }
+                    &-crutch {
+                        display: none;
+                    }
+                }
+                & .info {
+                    width: 80%;
+                    margin: 25px auto auto;
+                }
+            }
+        }
+        .profile__friends {
+            display: none;
+        }
+    }
+    @media (max-width: 760px) {
+        .profile {
+            &__hero {
+                &-img {
+                    & img {
+                        width: 300px;
+                        height: 300px;
+                    }
+                }
+                & .info {
+                    width: 90%;
+                }
+            }
+        }
+    }
+    @media (max-width: 420px) {
+        .info {
+            &-body {
+                &__btn {
+                    font-size: 10px;
+                }
+            }
         }
     }
 </style>

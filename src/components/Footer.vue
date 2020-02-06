@@ -1,5 +1,4 @@
 <template>
-<!--    TODO: стилизовать футер-->
     <footer class="footer">
         <ul class="list">
             <li class="list-item" @click="goToFeed">
@@ -31,13 +30,18 @@
     import Messages from "@/components/Pages/Messages";
     import Friends from "@/components/Pages/Friends";
     import Login from "@/components/Pages/Login";
+    import ProfileEdit from "@/components/Pages/ProfileEdit";
 
     export default {
         name: 'Footer',
         methods: {
             goToProfile() {
-                if (this.$router.currentRoute.name !== Profile.name)
-                    this.$router.push({name: Profile.name})
+                if (this.$router.currentRoute.name === Profile.name)
+                    this.$router.replace({name: ProfileEdit.name});
+                else if (this.$router.currentRoute.name === ProfileEdit.name)
+                    this.$router.replace({name: Profile.name, params: {id: localStorage.getItem('user_id')}});
+                else
+                    this.$router.push({name: Profile.name, params: {id: localStorage.getItem('user_id')}});
             },
             goToFeed() {
                 if (this.$router.currentRoute.name !== Feed.name)
@@ -51,7 +55,6 @@
                 if (this.$router.currentRoute.name !== Friends.name)
                     this.$router.push({name: Friends.name})
             },
-            // TODO: реализовать выход
             exit() {
                 if (!confirm('Are you sure you want to sign out?'))
                     return;
