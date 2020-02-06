@@ -1,9 +1,9 @@
 <template>
     <div id="app">
         <div class="page">
-            <div v-if="check()" class="page__left"></div>
+            <div class="page__left"></div>
             <router-view></router-view>
-            <div v-if="check()" class="page__right"></div>
+            <div class="page__right"></div>
         </div>
         <Footer v-if="check()" />
     </div>
@@ -16,7 +16,11 @@
         components: {Footer},
         methods: {
             check() {
-                return this.$router.currentRoute.name !== 'Login' && this.$router.currentRoute.name !== 'Auth' && this.$router.currentRoute.name !== 'RememberPassword'
+                return this.$router.currentRoute.name !== 'Login'
+                    && this.$router.currentRoute.name !== 'Auth'
+                    && this.$router.currentRoute.name !== 'RememberPassword'
+                    && this.$router.currentRoute.name !== 'NewPassword'
+                    && this.$router.currentRoute.name !== 'RememberPassword'
             }
         }
     }
@@ -49,12 +53,11 @@
     }
     button {
         border: none;
-    }
-    button:focus {
         outline: none;
     }
-    input:focus {
+    input {
         outline: none;
+        border: none;
     }
     .circle-img {
         object-fit: cover;

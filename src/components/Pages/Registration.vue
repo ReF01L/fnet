@@ -1,39 +1,43 @@
 <template>
+    <!--    TODO: v-on:keyup.enter="" - При нажатии на enter -> следующий шаг-->
     <main>
         <div v-show="page === 1" class="register-first">
-            <h2>Registration Step 1</h2>
+            <h2>&lt;Registration_1/&gt;</h2>
             <span class="register-error" v-if="error">{{error}}</span>
             <form class="register-form">
                 <div class="form-group">
-                    <input type="text" v-model="user.first_name" placeholder="Name" class="form-control">
+                    <input type="text" v-model="user.first_name" placeholder="<first_name/>" class="form-control">
                 </div>
                 <div class="form-group">
-                    <input type="text" v-model="user.last_name" placeholder="Surname" class="form-control">
+                    <input type="text" v-model="user.last_name" placeholder="<second_name/>" class="form-control">
                 </div>
                 <div class="form-group">
-                    <input type="text" v-model="user.age" onblur="(this.type='text')" onfocus="(this.type='date')"
-                           placeholder="Date of Birth" class="from-control">
+                    <input type="text" v-model="user.birth_date" onblur="(this.type='text')"
+                           onfocus="(this.type='date')"
+                           placeholder="date_of_birth" class="from-control">
+                    <!--                    TODO: icon design-->
+                    <i class="far fa-calendar-check"></i>
                 </div>
                 <div class="radio-group">
                     <label class="radio">
                         <input v-model="user.gender" type="radio" value="male" name="gender">
-                        male
+                        &lt;male/&gt;
                         <span></span>
                     </label>
                     <label class="radio">
                         <input v-model="user.gender" type="radio" value="female" name="gender">
-                        female
+                        &lt;female/&gt;
                         <span></span>
                     </label>
                 </div>
                 <div class="btns">
-                    <button @click="swapWindow" class="btn_sign">Sign in</button>
-                    <button @click="firstNext" type="button" class="btn">Next</button>
+                    <button @click="swapWindow" class="btns-sign">Sign in</button>
+                    <button @click="firstNext" type="button" class="btns-btn">Next</button>
                 </div>
             </form>
         </div>
         <div v-show="page === 2" class="register-second">
-            <h2>Registration Step 2</h2>
+            <h2>&lt;Registration_2/&gt;</h2>
             <span class="register-error" v-if="error">{{error}}</span>
             <form class="register-form">
                 <div class="form-group">
@@ -47,22 +51,22 @@
                            class="form-control">
                 </div>
                 <div class="btns">
-                    <button @click="page -= 1" type="button" class="btn_sign">Back</button>
-                    <button @click="secondNext" type="button" class="btn">Next</button>
+                    <button @click="page -= 1" type="button" class="btns-btn">Back</button>
+                    <button @click="secondNext" type="button" class="btns-btn">Next</button>
                 </div>
             </form>
         </div>
         <div v-show="page === 3" class="register-third">
-            <h2>Registration Step 3</h2>
-            <h4>Get code from your e-mail</h4>
+            <h2>&lt;Registration_3/&gt;</h2>
+            <h4>/*Write code from your email*/</h4>
             <span class="register-error" v-if="error">{{error}}</span>
             <form class="register-form">
                 <div class="form-group">
-                    <input type="text" v-model="code" placeholder="Code" class="form-control">
+                    <input type="text" v-model="code" placeholder="<code/>" class="form-control">
                 </div>
                 <div class="btns">
-                    <button @click="page -= 1" type="button" class="btn_sign">Back</button>
-                    <button @click="auth" type="button" class="btn">Sign up</button>
+                    <button @click="back" type="button" class="btns-btn">Back</button>
+                    <button @click="auth" type="button" class="btns-sign">Sign up</button>
                 </div>
             </form>
         </div>
@@ -86,9 +90,10 @@
                     last_name: '',
                     email: '',
                     password: '',
-                    age: '',
+                    birth_date: '',
                     gender: ''
-                }
+                },
+                canMove: ''
             }
         },
         methods: {
@@ -97,47 +102,66 @@
             },
             firstNext() {
                 if (this.user.first_name === '') {
-                    this.error = 'Вы не ввели ваше имя!';
+                    this.error = 'You did not enter your name';
                 } else if (this.user.last_name === '') {
-                    this.error = 'Вы не ввели вашу фамилию!';
-                } else if (this.user.age === '') {
-                    this.error = 'Вы не указали ваш возраст!';
+                    this.error = 'You have not entered your last name';
+                } else if (this.user.birth_date === '') {
+                    this.error = 'You did not indicate your age';
                 } else if (this.user.gender === '') {
-                    this.error = 'Вы не указали ваш пол!';
+                    this.error = 'You did not specify your gender';
                 } else {
                     this.error = '';
                     this.page++;
                 }
             },
             secondNext() {
-                if (this.user.email === '') {
-                    this.error = 'Вы не ввели вашу почту!';
-                } else if (this.user.password === '' || this.password_repeat === '') {
-                    this.error = 'Вы не ввели пароль!';
-                } else if (this.user.password !== this.password_repeat) {
-                    this.error = 'Пароли отличаются друг от друга!'
+                let t = this;
+                if (t.user.password !== t.password_repeat) {
+                    t.error = 'Different passwords'
                 } else {
-                    this.error = '';
-                    this.page++;
+                    window.axios
+                        .post('http://20.188.3.202:5000/api/auth/register', this.user)
+                        .then(response => {
+                            t.canMove = response.data.status;
+                            if (t.canMove === 'auth_continue') {
+                                t.page++;
+                                t.error = ''
+                            } else t.error = response.data.error_message;
+                        })
+                        .catch(error => {
+                            alert("Хуёвое соединение с сервером: \n" + error);
+                        });
                 }
             },
             auth() {
-                if (this.code !== '') {
-                    // проверить не занята ли почта
-                    window.axios
-                        .post('http://20.188.3.202:5000/auth/register', this.user)
-                        .then(response => {
-                            // eslint-disable-next-line no-console
-                            console.log(response)
-                        })
-                        .catch(error => {
-                            // eslint-disable-next-line no-console
-                            console.log(error)
-                        });
-                    this.$router.replace({name: Profile.name})
-                } else {
-                    this.error = 'Вы не ввели код!';
-                }
+                let t = this;
+                window.axios
+                    .post('http://20.188.3.202:5000/api/auth/email_verify', {
+                        code: this.code,
+                        email: this.user.email
+                    })
+                    .then(response => {
+                            t.canMove = response.data.status;
+                            if (t.canMove === 'auth_success') {
+                                t.error = '';
+                                try {
+                                    localStorage.setItem('user_id', response.data.user_id);
+                                    localStorage.setItem('token', response.data.token);
+
+                                    this.$router.replace({name: Profile.name})
+                                } catch (e) {
+                                    alert('У тебя хуёвое локальное хранилище: \n' + e)
+                                }
+                            } else t.error = response.data.error_message;
+                        }
+                    )
+                    .catch(error => {
+                        alert("Хуёвое соединение с сервером: \n" + error);
+                    });
+            },
+            back() {
+                this.page--;
+                this.error = ''
             }
         }
     }
@@ -151,192 +175,175 @@
         width: 100%;
         height: 100vh;
         background: #f1f1f1;
-    }
 
+        h2 {
+            font-size: 30px;
+            color: #f1f1f1;
+        }
 
-    .register-first {
-        border: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 25%;
-        background: #2c3e50;
-        border-radius: 10px;
-        padding: 50px;
-    }
-
-    .register-second {
-        border: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 25%;
-        background: #2c3e50;
-        border-radius: 10px;
-        padding: 50px;
-    }
-
-    .register-third {
-        border: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 25%;
-        background: #2c3e50;
-        border-radius: 10px;
-        padding: 50px;
-    }
-
-    .radio {
-        &-group {
+        .btns {
             display: flex;
-            justify-content: flex-start;
-            margin: auto 3%;
-        }
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 15px;
 
-        font-size: 20px;
-        font-weight: 500;
-        text-transform: capitalize;
-        display: inline-block;
-        vertical-align: middle;
-        color: #ac3e31;
-        position: relative;
-        padding-left: 30px;
-        cursor: pointer;
+            &-sign, &-btn {
+                border-radius: 50px;
+                border: none;
+                width: 40%;
+                padding: 10px;
+            }
 
-        & + .radio {
-            margin-left: 20px;
-        }
+            &-sign {
+                background-color: #ced2cc;
+                color: #202020;
 
-        & input[type="radio"] {
-            display: none;
+                &:hover {
+                    background-color: #202020;
+                    color: #ced2cc;
+                    cursor: pointer;
+                }
+            }
 
-            &:checked ~ span:after {
-                -webkit-transform: translate(-50%, -50%) scale(1);
-                -moz-transform: translate(-50%, -50%) scale(1);
-                -ms-transform: translate(-50%, -50%) scale(1);
-                -o-transform: translate(-50%, -50%) scale(1);
-                transform: translate(-50%, -50%) scale(1);
+            &-btn {
+                border: 1px solid #f1f1f1;
+                background-color: transparent;
+                color: #f1f1f1;
+
+                &:hover {
+                    background-color: #202020;
+                    cursor: pointer;
+                }
             }
         }
 
-        & span {
-            height: 20px;
-            width: 20px;
-            border-radius: 50%;
-            border: 3px solid #0091d5;
-            display: block;
-            position: absolute;
-            left: 0;
-            top: 0;
+        .register {
+            &-form {
+                margin: auto 30px 30px;
+                width: 100%;
 
-            &::after {
-                content: "";
-                height: 8px;
-                width: 8px;
-                background: #0091d5;
-                display: block;
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                -webkit-transform: translate(-50%, -50%) scale(0);
-                -moz-transform: translate(-50%, -50%) scale(0);
-                -ms-transform: translate(-50%, -50%) scale(0);
-                -o-transform: translate(-50%, -50%) scale(0);
-                transform: translate(-50%, -50%) scale(0);
-                border-radius: 50%;
-                -webkit-transition: 300ms ease-in-out 0s;
-                -moz-transition: 300ms ease-in-out 0s;
-                -ms-transition: 300ms ease-in-out 0s;
-                -o-transition: 300ms ease-in-out 0s;
-                transition: 300ms ease-in-out 0s;
-            }
-        }
-    }
+                & input {
+                    width: 90%;
+                    padding: 10px;
+                    margin: 10px;
+                    border-radius: 10px;
+                    font-weight: 500;
+                    letter-spacing: 1px;
+                    font-style: italic;
+                    font-size: 16px;
+                    color: #484848;
+                    background: #DADADA;
 
-    .register-error {
-        color: red;
-    }
-
-    .btns {
-        margin-top: 15px;
-        display: flex;
-        justify-content: flex-end;
-        padding-right: 15px;
-    }
-
-    .btn_sign {
-        border-radius: 1.5rem;
-        border: none;
-        width: 120px;
-        background-color: #ced2cc;
-        font-weight: 600;
-        color: #202020;
-        padding: 10px;
-        margin-right: 15px;
-
-        &:hover {
-            background-color: #202020;
-            color: #ced2cc;
-            cursor: pointer;
-        }
-    }
-
-    .btn {
-        border-radius: 1.5rem;
-        border: 1px solid #202020;
-        width: 120px;
-        background-color: transparent;
-        font-weight: 600;
-        color: #fff;
-        padding: 10px;
-
-        &:hover {
-            background-color: #202020;
-            cursor: pointer;
-        }
-    }
-
-    h2 {
-        width: calc(30px * 12 / 2);
-        text-align: center;
-        font-size: 30px;
-        color: #f1f1f1;
-        margin-bottom: 10px;
-    }
-
-    h4 {
-        text-align: center;
-        color: #0091d5;
-    }
-
-    .register-form {
-        padding: 30px;
-        width: 100%;
-
-        & input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-            border: 1px solid rgba(192, 192, 192, 0.4);
-            font-weight: 500;
-            letter-spacing: 1px;
-            font-style: italic;
-            font-size: 18px;
-            color: #59001e;
-
-            &:focus {
-                border: 1px solid #ffdde8;
-                background: linear-gradient(to right, #fff6f9, #fafafa);
+                    &::placeholder {
+                        color: rgba(0, 0, 0, 0.4);
+                        font-weight: 500;
+                        letter-spacing: 1px;
+                        font-style: italic;
+                        font-size: 15px;
+                        opacity: 0.8;
+                    }
+                }
             }
 
-            &::placeholder {
-                font-weight: 500;
-                letter-spacing: 1px;
-                font-style: italic;
-                font-size: 15px;
-                opacity: 0.8;
+            &-error {
+                margin: 10px;
+                color: #EA6A47;
+            }
+
+            &-first {
+                border: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-width: 25%;
+                background: #484848;
+                border-radius: 10px;
+                padding: 50px;
+
+                .radio {
+                    color: #dadada;
+                    position: relative;
+                    padding-left: 30px;
+                    cursor: pointer;
+
+                    &-group {
+                        display: flex;
+                        justify-content: space-around;
+                        margin: auto;
+
+                        & + .radio {
+                            margin-left: 20px;
+                        }
+
+                        & input[type="radio"] {
+                            display: none;
+
+                            &:checked ~ span:after {
+                                transform: translate(-50%, -50%) scale(1);
+                            }
+                        }
+
+                        & span {
+                            height: 20px;
+                            width: 20px;
+                            border-radius: 50%;
+                            border: 3px solid #f1f1f1;
+                            background: #f1f1f1;
+                            display: block;
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+
+                            &::after {
+                                content: "";
+                                height: 8px;
+                                width: 8px;
+                                background: rgba(72, 72, 72, 0.5);
+                                display: block;
+                                position: absolute;
+                                left: 50%;
+                                top: 50%;
+                                transform: translate(-50%, -50%) scale(0);
+                                border-radius: 50%;
+                                transition: 300ms ease-in-out 0s;
+                            }
+                        }
+                    }
+
+                    font-size: 20px;
+                }
+            }
+
+            &-second {
+                border: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-width: 25%;
+                background: #484848;
+                border-radius: 10px;
+                padding: 50px;
+            }
+
+            &-third {
+                border: none;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-width: 25%;
+                background: #484848;
+                border-radius: 10px;
+                padding: 50px;
+
+                h4 {
+                    margin-top: 20px;
+                    font-size: 13px;
+                    color: #0091d5;
+                }
+
+                & .register-form {
+                    padding-top: 0;
+                }
             }
         }
     }

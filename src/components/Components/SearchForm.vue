@@ -21,10 +21,6 @@
             display: inline-block;
             font-size: 20px;
             box-sizing: border-box;
-            -webkit-transition: .5s;
-            -moz-transition: .5s;
-            -ms-transition: .5s;
-            -o-transition: .5s;
             transition: .5s;
         }
 

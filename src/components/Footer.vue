@@ -1,25 +1,25 @@
 <template>
+<!--    TODO: стилизовать футер-->
     <footer class="footer">
         <ul class="list">
-            <li class="list-item" v-on:click="goToProfile">
-                <span class="content">Main Page</span>
-                <i class="fa fa-home" aria-hidden="true"></i>
-            </li>
-            <li class="list-item" v-on:click="goToFeed">
+            <li class="list-item" @click="goToFeed">
                 <span class="content">Feeds</span>
                 <i class="fa fa-newspaper-o" aria-hidden="true"></i>
             </li>
-            <li class="list-item" v-on:click="goToMessages">
+            <li class="list-item" @click="goToMessages">
                 <span class="content">Messages</span>
                 <i class="fa fa-comments" aria-hidden="true"></i>
             </li>
-            <li class="list-item" v-on:click="goToFriends">
+            <li class="list-item" @click="goToProfile">
+                <img src="../assets/logo.png" alt="">
+            </li>
+            <li class="list-item" @click="goToFriends">
                 <span class="content">Friends</span>
                 <i class="fa fa-user" aria-hidden="true"></i>
             </li>
-            <li class="list-item" v-on:click="goToPhoto">
-                <span class="content">Photos</span>
-                <i class="fa fa-camera" aria-hidden="true"></i>
+            <li class="list-item" @click="exit">
+                <span class="content">Sign out</span>
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
             </li>
         </ul>
     </footer>
@@ -30,7 +30,7 @@
     import Feed from "@/components/Pages/Feed";
     import Messages from "@/components/Pages/Messages";
     import Friends from "@/components/Pages/Friends";
-    import Photo from "@/components/Pages/Photo";
+    import Login from "@/components/Pages/Login";
 
     export default {
         name: 'Footer',
@@ -51,46 +51,75 @@
                 if (this.$router.currentRoute.name !== Friends.name)
                     this.$router.push({name: Friends.name})
             },
-            goToPhoto() {
-                if (this.$router.currentRoute.name !== Photo.name)
-                    this.$router.push({name: Photo.name})
-            },
+            // TODO: реализовать выход
+            exit() {
+                if (!confirm('Are you sure you want to sign out?'))
+                    return;
+                localStorage.removeItem('token');
+                localStorage.removeItem('user_id');
+                this.$router.replace({name: Login.name})
+            }
         }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .footer {
-        width: 100%;
+        border-top: 1px solid #4CB5F5;
+        width: 60%;
         position: fixed;
         bottom: 0;
-        left: 0;
+        left: 20%;
         display: flex;
         justify-content: center;
         align-items: center;
+        & .content {
+            opacity: 0;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+        & ul {
+            display: flex;
+            & li {
+                font-size: 25px;
+                justify-content: flex-end;
+                list-style: none;
+                padding: 15px;
+                display: flex;
+                flex-direction: column;
+                &:hover {
+                    cursor: pointer;
+                }
+                & img {
+                    width: 50px;
+                }
+                &:hover .content, li {
+                    opacity: 1;
+                }
+            }
+        }
     }
-
-    .footer ul {
-        display: flex;
+    @media (max-width: 981px) {
+        .footer {
+            width: 100%;
+            left: 0;
+        }
     }
-
-    .footer li {
-        font-size: 25px;
-        justify-content: flex-end;
-        list-style: none;
-        padding: 15px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .footer li:hover .content, li {
-        opacity: 1;
-        cursor: pointer;
-    }
-
-    .footer .content {
-        opacity: 0;
-        font-size: 15px;
-        margin-bottom: 5px;
+    @media (max-width: 450px) {
+        .footer {
+            & .content {
+                font-size: 10px;
+                margin-bottom: auto;
+            }
+            & ul {
+                & li {
+                    font-size: 15px;
+                    padding: 10px;
+                    & img {
+                        width: 25px;
+                    }
+                }
+            }
+        }
     }
 </style>

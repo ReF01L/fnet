@@ -72,13 +72,11 @@
 
             &-img {
                 position: relative;
-
                 & img {
                     position: absolute;
                     z-index: 3;
                     transform: translate(-50%);
                 }
-
                 &-crutch {
                     z-index: 2;
                     position: absolute;
@@ -86,6 +84,7 @@
                     height: 150px;
                     transform: translate(-50%, 100%) rotate(133.79deg);
                     background: #4CB5F5;
+
                     &:last-child {
                         transform: translate(-50%, 100%) rotate(31.74deg);
                     }
@@ -95,7 +94,7 @@
         & .info {
             width: 30%;
             min-width: 340px;
-            margin-right: 10%;
+            margin-left: 10%;
             &-status {
                 min-height: 40px;
                 background: #484848;
@@ -125,10 +124,10 @@
                     }
                 }
             }
-
             &-body {
                 background: #202020;
                 border-radius: 0 0 32px 32px;
+
                 &__name {
                     display: flex;
                     flex-direction: column;
@@ -154,6 +153,7 @@
                 &__status {
                     display: flex;
                     flex-direction: column;
+
                     &-tag {
                         color: #4cb5f5;
                         align-self: flex-start;
@@ -173,28 +173,23 @@
                     }
                 }
             }
-
             &-btns {
                 margin-top: 15px;
-
                 &-btn {
                     background: #202020;
                     width: 48%;
                     height: 64px;
                     font-size: 24px;
                     transition: 0.5s;
-
                     &:hover {
                         cursor: pointer;
                         transform: scale(1.05);
                     }
-
                     &:first-child {
                         color: #b3c100;
                         border-radius: 25px 0 0 25px;
                         margin-right: 10px;
                     }
-
                     &:last-child {
                         color: #dbae58;
                         border-radius: 0 25px 25px 0;
@@ -213,6 +208,62 @@
             align-items: center;
             justify-content: center;
             width: 90%;
+        }
+    }
+    @media (max-width: 1375px) {
+        .profile {
+            &__hero {
+                margin: auto;
+            }
+            & .info {
+                margin-left: 30%;
+            }
+            & .notation {
+                margin: auto;
+                width: 100%;
+            }
+        }
+    }
+    @media (max-width: 1225px) {
+        .profile {
+            &__hero {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 35px;
+                &-img {
+                    & img {
+                        transform: translate(0);
+                        position: relative;
+                    }
+                    &-crutch {
+                        display: none;
+                    }
+                }
+                & .info {
+                    width: 100%;
+                    margin: 25px auto auto;
+                }
+            }
+        }
+        .profile__friends {
+            display: none;
+        }
+    }
+    @media (max-width: 760px) {
+        .profile {
+            &__hero {
+                &-img {
+                    & img {
+                        width: 300px;
+                        height: 300px;
+                    }
+                }
+                & .info {
+                    width: 90%;
+                }
+            }
         }
     }
 </style>

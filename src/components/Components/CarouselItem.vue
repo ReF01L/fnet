@@ -22,8 +22,14 @@
 
 <style lang="scss" scoped>
     .circle-img {
-        width: 150px;
+        width: 15%;
         height: 150px;
         margin: 0 15px;
+    }
+    @media (max-width: 1500px) {
+        .circle-img {
+            height: 100px;
+            margin: 25px 10px;
+        }
     }
 </style>

@@ -1,6 +1,8 @@
 <template>
     <div class="messages">
-        <SearchForm :place="'Dialog'"/>
+        <div class="search">
+            <input type="text" placeholder="<find/>">
+        </div>
         <div class="messages__box">
             <div class="dialogs">
                 <Dialog class="dialog" v-for="dialog in sortedMessages" :key="dialog.id"
@@ -17,11 +19,10 @@
 
 <script>
     import Dialog from "@/components/Components/Dialog";
-    import SearchForm from "@/components/Components/SearchForm";
 
     export default {
         name: "Messages",
-        components: {SearchForm, Dialog},
+        components: {Dialog},
         data() {
             return {
                 dialogs: [
@@ -39,27 +40,6 @@
                         time: '16:40 { 1 feb 2020 }',
                         count: 1
                     },
-                    {
-                        companion: 'ReF0iL',
-                        text: 'Привет',
-                        image: 'profileImage.png',
-                        time: '16:40 { 1 feb 2020 }',
-                        count: 3
-                    },
-                    {
-                        companion: 'Max',
-                        text: 'Привет',
-                        image: 'profileImage.png',
-                        time: '16:40 { 1 feb 2020 }',
-                        count: 6
-                    },
-                    {
-                        companion: 'Vlad',
-                        text: 'Привет',
-                        image: '',
-                        time: '16:40 { 1 feb 2020 }',
-                        count: 0
-                    }
                 ]
             }
         },
@@ -76,32 +56,56 @@
 </script>
 
 <style lang="scss" scoped>
-    .search-form {
-        width: 40%;
-        align-self: center;
-    }
-
     .messages {
-        padding-top: 85px;
-        min-height: calc(100vh + 60px);
+        padding-top: 25px;
+        min-height: 100vh;
         background-color: var(--main-bg-color);
         width: 100%;
         display: flex;
         flex-direction: column;
+        .search {
+            background: #CED2CC;
+            border-radius: 20px;
+            width: 70%;
+            align-self: center;
+            & input {
+                border-radius: 10px;
+                width: 95%;
+                padding: 10px;
+                margin: 10px auto;
+            }
+        }
         &__box {
             display: flex;
             justify-content: center;
+            .dialogs {
+                margin: 0 25px;
+                width: 100%;
+                .dialog {
+                    margin: 25px 0 15px 0;
+                    padding: 15px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+            }
+        }
+    }
+    @media (max-width: 1120px) {
+        .messages {
+            padding-top: 10px;
+            .search {
+                width: 100%;
+            }
+            &__box {
+                .dialogs {
+                    .dialog {
+                        padding: 10px;
+                    }
+                }
+            }
         }
     }
 
-    .dialogs {
-        padding-left: 5%;
-        margin: 0 25px;
-        width: 100%;
-    }
 
-    .dialog {
-        margin: 25px 0 15px 0;
-        padding: 15px;
-    }
 </style>

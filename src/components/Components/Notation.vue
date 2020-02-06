@@ -110,4 +110,45 @@
             }
         }
     }
+    @media (max-width: 1375px) {
+        .notation {
+            width: 100%;
+        }
+    }
+    @media (max-width: 450px) {
+        .notation {
+            &__title {
+                justify-content: space-around;
+                & span {
+                    margin: auto 5px;
+                    font-size: 12px;
+                }
+            }
+            &__body {
+                &__img {
+                    &-tag {
+                        font-size: 20px;
+                    }
+                    &-img {
+                        margin: 15px;
+                    }
+                }
+                &__text {
+                    padding: 15px;
+                    &-tag {
+                        font-size: 20px;
+                    }
+                    &-text {
+                        margin: 15px;
+                    }
+                }
+            }
+            &__coop {
+                padding-right: 5px;
+                & span {
+                    padding: 7px;
+                }
+            }
+        }
+    }
 </style>

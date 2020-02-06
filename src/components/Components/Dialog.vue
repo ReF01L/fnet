@@ -10,10 +10,10 @@
                     <img :src="require('../../assets/' + image)" alt="" class="message__body__img-img circle-img">
                 </div>
                 <div v-else class="message__body__img-circle" :style="{'background': color}">nullptr</div>
-                <div class="message__body__text">
+                <div class="message__body__text" @click="openDialog">
                     <span class="message__body__text-tag">/*</span>
                     <div class="message__body__text__body">
-                        <span class="message__body__text__body-text">{{text.length > 50 ? text.substring(0, 50) + '&lt;...&gt;' : text}}</span>
+                        <span class="message__body__text__body-text">{{text.length > length ? text.substring(0, length) + '&lt;...&gt;' : text}}</span>
                         <span class="message__body__text__body-date">&lt;{{time}}&gt;</span>
                     </div>
                     <span class="message__body__text-tag">*/</span>
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+    import Dialog from "@/components/Pages/Dialog";
+
     export default {
         name: "Dialog",
         props: {
@@ -33,9 +35,15 @@
             time: String,
             count: Number
         },
+        methods: {
+            openDialog() {
+                this.$router.push({name: Dialog.name});
+            }
+        },
         data() {
             return {
-                color: ''
+                color: '',
+                length: 40
             }
         },
         mounted() {
@@ -45,6 +53,9 @@
                     b = Math.floor(Math.random() * (256));
                 this.color = '#' + r.toString(16) + g.toString(16) + b.toString(16);
             }
+            if (screen.width <= '540') {
+                this.length = 20;
+            }
         }
     }
 </script>
@@ -53,6 +64,7 @@
     .m {
         & .message {
             width: 80%;
+
             &__title {
                 display: flex;
                 align-items: center;
@@ -72,14 +84,17 @@
                     }
                 }
             }
+
             &__body {
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
                 background: #202020;
                 border-radius: 0 0 32px 32px;
+
                 &__img {
                     margin: 20px;
+
                     &-circle {
                         margin: 20px;
                         width: 120px;
@@ -88,12 +103,17 @@
                         display: flex;
                         align-items: center;
                         justify-content: center;
+                        color: #f1f1f1;
+                        font-weight: bold;
+                        font-size: 20px;
                     }
+
                     &-img {
                         width: 120px;
                         height: 120px;
                     }
                 }
+
                 &__text {
                     position: relative;
                     background: #A5D8DD;
@@ -102,6 +122,11 @@
                     display: flex;
                     flex-direction: column;
                     align-items: flex-start;
+
+                    &:hover {
+                        cursor: pointer;
+                    }
+
                     &-tag {
                         padding: 5px;
                         font-size: 24px;
@@ -113,6 +138,7 @@
                     }
 
                     &__body {
+
                         &-text {
                             margin-left: 35px;
                             color: #20283E;
@@ -125,6 +151,83 @@
                             position: absolute;
                             top: 5px;
                             right: 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 1120px) {
+        .m {
+            & .message {
+                width: 100%;
+                &__title {
+                    & span {
+                        font-size: 14px;
+                    }
+                }
+                &__body {
+                    &__img {
+                        margin: 15px;
+                        &-circle {
+                            margin: 10px;
+                            width: 100px;
+                            height: 100px;
+                            font-size: 16px;
+                        }
+                        &-img {
+                            width: 100px;
+                            height: 100px;
+                        }
+                    }
+                    &__text {
+                        width: calc(100% - 150px);
+                        max-height: 120px;
+                        &__body {
+                            &-text {
+                                margin-left: 15px;
+                                font-size: 15px;
+                            }
+                            &-date {
+                                font-size: 8px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 730px) {
+
+        .m {
+            & .message {
+                &__title {
+                    & span {
+                        font-size: 10px;
+                    }
+                }
+                &__body {
+                    &__img {
+                        display: none;
+                        &-circle {
+                            display: none;
+                        }
+                    }
+                    &__text {
+                        width: 100%;
+                        margin: 5px 10px 10px;
+                        &__body {
+                            &-text {
+                                margin-left: 10px;
+                                font-size: 12px;
+                            }
+                            &-date {
+                                font-size: 8px;
+                            }
+                        }
+                        &-tag {
+                            padding: 5px;
+                            font-size: 14px;
                         }
                     }
                 }
