@@ -9,30 +9,29 @@
             <div class="info">
                 <div class="info-status">
                     <span>Profile</span>
-                    <i class="fa fa-cog" aria-hidden="true"></i>
+                    <i @keypress.enter="changeStatus" @click="changeStatus" class="fa fa-cog" aria-hidden="true"></i>
                 </div>
                 <div class="info-body">
                     <div class="info-body__name">
                         <span class="info-body__name-tag">&lt;Name&gt;</span>
-                        <span class="info-body__name-name">Чешко Илья</span>
+                        <textarea disabled="disabled" class="info-body__status-status" v-model="name" ></textarea>
                         <span class="info-body__name-tag">&lt;/Name&gt;</span>
-                        <button class="btn info-body__btn">&lt;save_changes/&gt;</button>
                     </div>
                 </div>
                 <div class="info-body__password">
                     <label>
                         &lt;old_password/&gt;
-                        <input type="password">
+                        <input v-model="old_password" type="password">
                     </label>
                     <label>
                         &lt;new_password/&gt;
-                        <input type="password">
+                        <input v-model="new_password" type="password">
                     </label>
                     <label>
                         &lt;repeat_password/&gt;
-                        <input type="password">
+                        <input v-model="repeat_password" type="password">
                     </label>
-                    <button class="btn info-body__btn">&lt;edit_password/&gt;</button>
+                    <button @click="changePassword" class="btn info-body__btn">&lt;edit_password/&gt;</button>
                 </div>
             </div>
         </div>
@@ -42,46 +41,90 @@
 <script>
     export default {
         name: 'ProfileEdit',
+        data() {
+            return {
+                name: '',
+                old_password: '',
+                new_password: '',
+                repeat_password: '',
+            }
+        },
+        methods: {
+            changeStatus() {
+                event.target.preventDefault;
+                document.querySelectorAll('.info-body__status-status').forEach(elem => {
+                    elem.disabled = !elem.disabled;
+                    elem.addEventListener('keydown', (e) => {
+                        if (e.keyCode === 13 && !e.shiftKey) {
+                            e.preventDefault();
+                            elem.disabled = !elem.disabled;
+                            window.axios
+                                .put(`http://20.188.3.202:5000/api/users/update_name`, {
+                                    token: localStorage.getItem('token'),
+                                    first_name: this.name.split(' ')[1],
+                                    last_name: this.name.split(' ')[0],
+                                })
+                        }
+                    });
+                });
+            },
+            changePassword() {
+                if (this.new_password === this.repeat_password) {
+                    window.axios
+                        .put(`http://20.188.3.202:5000/api/users/update_password`, {
+                            token: localStorage.getItem('token'),
+                            old_password: this.old_password,
+                            new_password: this.new_password
+                        })
+                        .then(response => {
+                            // eslint-disable-next-line no-console
+                            console.log(response);
+                            localStorage.setItem('token', response.data.token);
+                        });
+                }
+            }
+        },
+        mounted() {
+            window.axios
+                .get('http://20.188.3.202:5000/api/users/' + localStorage.getItem('user_id'))
+                .then(response => {
+                    this.name = `${response.data.last_name} ${response.data.first_name}`;
+                });
+        }
     }
 </script>
 
 <style lang="scss" scoped>
     .profile {
-        min-width: 100vw;
-        min-height: calc(100vh + 60px);
+        width: 100%;
+        min-height: 100vh;
         background-color: var(--main-bg-color);
-
         &__hero {
             width: 100%;
             display: flex;
             justify-content: space-around;
             padding-top: 40px;
             margin-left: 10%;
-
             &-img {
                 position: relative;
-
                 & img {
                     position: absolute;
                     z-index: 3;
-                    transform: translate(-15%, 25%);
+                    transform: translate(-50%, 25%);
                 }
-
                 &-crutch {
                     z-index: 2;
                     position: absolute;
                     width: 750px;
                     height: 150px;
-                    transform: translate(-25%, 175%) rotate(133.79deg);
+                    transform: translate(-50%, 175%) rotate(133.79deg);
                     background: #4CB5F5;
-
                     &:last-child {
-                        transform: translate(-25%, 175%) rotate(31.74deg);
+                        transform: translate(-50%, 175%) rotate(31.74deg);
                     }
                 }
             }
         }
-
         & .info {
             width: 30%;
             min-width: 340px;
@@ -94,29 +137,43 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-
                 & span {
                     font-size: 24px;
                     text-align: center;
                     color: #dadada;
                     margin-left: 25px;
                 }
-
                 & i {
                     margin-right: 25px;
                     font-size: 25px;
                     color: #f1f1f1;
                     transition: 2s ease-in-out;
-
                     &:hover {
                         transform: rotate(720deg);
                     }
                 }
             }
-
             &-body {
                 background: #202020;
                 border-radius: 0 0 32px 32px;
+                &__status-status {
+                    background: transparent;
+                    bottom: 0;
+                    outline: none;
+                    font-size: 24px;
+                    color: #dadada;
+                    padding: 15px;
+                    margin: 0 auto;
+                    border: none;
+                    -ms-overflow-style: none; /* IE 10+ */
+                    scrollbar-width: none; /* Firefox */
+                    resize: none;
+
+                    &::-webkit-scrollbar {
+                        width: 0;
+                        background: transparent;
+                    }
+                }
                 &__password {
                     align-self: center;
                     width: 80%;
@@ -149,6 +206,11 @@
                     border-radius: 32px;
                     min-height: 40px;
                     margin-bottom: 15px;
+                    transition: .5s;
+                    &:hover {
+                        cursor: pointer;
+                        transform: scale(1.03);
+                    }
                 }
                 &__name {
                     display: flex;
@@ -173,9 +235,73 @@
                 }
             }
         }
-
         &__friends {
             margin: 10% auto;
+        }
+    }
+    @media (max-width: 1375px) {
+        .profile {
+            &__hero {
+                margin: auto;
+            }
+            & .info {
+                margin-left: 30%;
+            }
+            & .notation {
+                margin: auto;
+                width: 100%;
+            }
+        }
+    }
+    @media (max-width: 1225px) {
+        .profile {
+            &__hero {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 35px;
+                &-img {
+                    & img {
+                        transform: translate(0);
+                        position: relative;
+                    }
+                    &-crutch {
+                        display: none;
+                    }
+                }
+                & .info {
+                    width: 80%;
+                    margin: 25px auto auto;
+                }
+            }
+        }
+        .profile__friends {
+            display: none;
+        }
+    }
+    @media (max-width: 760px) {
+        .profile {
+            &__hero {
+                &-img {
+                    & img {
+                        width: 300px;
+                        height: 300px;
+                    }
+                }
+                & .info {
+                    width: 90%;
+                }
+            }
+        }
+    }
+    @media (max-width: 420px) {
+        .info {
+            &-body {
+                &__btn {
+                    font-size: 10px;
+                }
+            }
         }
     }
 </style>

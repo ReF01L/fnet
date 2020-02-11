@@ -11,15 +11,21 @@ import RememberPassword from    "@/components/Pages/RememberPassword";
 import NewPassword from         "@/components/Pages/NewPassword";
 import ProfileEdit from         "@/components/Pages/ProfileEdit";
 import Dialog from              "@/components/Pages/Dialog";
+import Error from              "@/components/Pages/404";
 
 Vue.use(VueRouter);
 
 export default new VueRouter({
     routes: [
         {
-            path: '/profile',
+            path: '/profile/:id',
             name: Profile.name,
             component: Profile,
+        },
+        {
+            path: '*',
+            name: Error.name,
+            component: Error
         },
         {
             path:'/profile/edit',
@@ -32,7 +38,7 @@ export default new VueRouter({
             component: Messages
         },
         {
-            path: '/messages/dialog',
+            path: '/messages/dialog/:companion_id',
             name: Dialog.name,
             component: Dialog
         },

@@ -118,9 +118,9 @@
             background: #484848;
             border-radius: 10px;
             padding: 50px;
-            /*TODO: ошибка*/
             &-error {
-                color: red;
+                margin: 10px;
+                color: #EA6A47
             }
             & h2 {
                 font-size: 30px;

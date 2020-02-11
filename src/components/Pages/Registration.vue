@@ -14,7 +14,6 @@
                     <input type="text" v-model="user.birth_date" onblur="(this.type='text')"
                            onfocus="(this.type='date')"
                            placeholder="date_of_birth" class="from-control">
-<!--                    TODO: icon design-->
                     <i class="far fa-calendar-check"></i>
                 </div>
                 <div class="radio-group">
@@ -64,7 +63,7 @@
                     <input type="text" v-model="code" placeholder="<code/>" class="form-control">
                 </div>
                 <div class="btns">
-                    <button @click="page -= 1" type="button" class="btns-btn">Back</button>
+                    <button @click="back" type="button" class="btns-btn">Back</button>
                     <button @click="auth" type="button" class="btns-sign">Sign up</button>
                 </div>
             </form>
@@ -118,25 +117,28 @@
                 if (t.user.password !== t.password_repeat) {
                     t.error = 'Different passwords'
                 } else {
-                    // window.axios
-                    //     .post('http://20.188.3.202:5000/auth/register', this.user)
-                    //     .then(response => {
-                    //         t.canMove = response.data.status;
-                    //         if (t.canMove === 'auth_continue') {
-                    //             t.page++;
-                    //             t.error = ''
-                    //         } else t.error = response.data.error_message;
-                    //     })
-                    //     .catch(error => {
-                    //         alert("Хуёвое соединение с сервером: \n" + error);
-                    //     });
-                    t.page++;
+                    window.axios
+                        .post('http://20.188.3.202:5000/api/auth/register', this.user)
+                        .then(response => {
+                            // eslint-disable-next-line no-console
+                            console.log(response);
+                            t.canMove = response.data.status;
+                            if (t.canMove === 'auth_continue') {
+                                t.page++;
+                                t.error = ''
+                            } else t.error = response.data.error_message;
+                        })
+                        .catch(error => {
+                            // eslint-disable-next-line no-console
+                            console.log(error);
+                            alert("Хуёвое соединение с сервером: \n" + error);
+                        });
                 }
             },
             auth() {
                 let t = this;
                 window.axios
-                    .post('http://20.188.3.202:5000/auth/email_verify', {
+                    .post('http://20.188.3.202:5000/api/auth/email_verify', {
                         code: this.code,
                         email: this.user.email
                     })
@@ -144,14 +146,24 @@
                             t.canMove = response.data.status;
                             if (t.canMove === 'auth_success') {
                                 t.error = '';
-                                // TODO: Записать в куки user_id, token
-                                this.$router.replace({name: Profile.name})
+                                try {
+                                    localStorage.setItem('user_id', response.data.user_id);
+                                    localStorage.setItem('token', response.data.token);
+
+                                    this.$router.replace({name: Profile.name, params: {id: localStorage.getItem('user_id')}});
+                                } catch (e) {
+                                    alert('У тебя хуёвое локальное хранилище: \n' + e)
+                                }
                             } else t.error = response.data.error_message;
                         }
                     )
                     .catch(error => {
                         alert("Хуёвое соединение с сервером: \n" + error);
                     });
+            },
+            back() {
+                this.page--;
+                this.error = ''
             }
         }
     }
@@ -165,43 +177,51 @@
         width: 100%;
         height: 100vh;
         background: #f1f1f1;
+
         h2 {
             font-size: 30px;
             color: #f1f1f1;
         }
+
         .btns {
             display: flex;
             justify-content: space-around;
             align-items: center;
             margin-top: 15px;
+
             &-sign, &-btn {
                 border-radius: 50px;
                 border: none;
                 width: 40%;
                 padding: 10px;
             }
+
             &-sign {
                 background-color: #ced2cc;
                 color: #202020;
+
                 &:hover {
                     background-color: #202020;
                     color: #ced2cc;
                     cursor: pointer;
                 }
             }
+
             &-btn {
                 border: 1px solid #f1f1f1;
                 background-color: transparent;
                 color: #f1f1f1;
+
                 &:hover {
                     background-color: #202020;
                     cursor: pointer;
                 }
             }
         }
+
         .register {
             &-form {
-                padding: 30px;
+                margin: auto 30px 30px;
                 width: 100%;
 
                 & input {
@@ -215,6 +235,7 @@
                     font-size: 16px;
                     color: #484848;
                     background: #DADADA;
+
                     &::placeholder {
                         color: rgba(0, 0, 0, 0.4);
                         font-weight: 500;
@@ -225,9 +246,12 @@
                     }
                 }
             }
+
             &-error {
-                color: red;
+                margin: 10px;
+                color: #EA6A47;
             }
+
             &-first {
                 border: none;
                 display: flex;
@@ -237,24 +261,30 @@
                 background: #484848;
                 border-radius: 10px;
                 padding: 50px;
+
                 .radio {
                     color: #dadada;
                     position: relative;
                     padding-left: 30px;
                     cursor: pointer;
+
                     &-group {
                         display: flex;
                         justify-content: space-around;
                         margin: auto;
+
                         & + .radio {
                             margin-left: 20px;
                         }
+
                         & input[type="radio"] {
                             display: none;
+
                             &:checked ~ span:after {
                                 transform: translate(-50%, -50%) scale(1);
                             }
                         }
+
                         & span {
                             height: 20px;
                             width: 20px;
@@ -281,9 +311,11 @@
                             }
                         }
                     }
+
                     font-size: 20px;
                 }
             }
+
             &-second {
                 border: none;
                 display: flex;
@@ -294,6 +326,7 @@
                 border-radius: 10px;
                 padding: 50px;
             }
+
             &-third {
                 border: none;
                 display: flex;
@@ -303,11 +336,13 @@
                 background: #484848;
                 border-radius: 10px;
                 padding: 50px;
+
                 h4 {
                     margin-top: 20px;
                     font-size: 13px;
-                    color: #0091d5;
+                    color: #F1F1F1;
                 }
+
                 & .register-form {
                     padding-top: 0;
                 }

@@ -13,7 +13,7 @@
                 <div class="message__body__text" @click="openDialog">
                     <span class="message__body__text-tag">/*</span>
                     <div class="message__body__text__body">
-                        <span class="message__body__text__body-text">{{text.length > 50 ? text.substring(0, 50) + '&lt;...&gt;' : text}}</span>
+                        <span class="message__body__text__body-text">{{text.length > length ? text.substring(0, length) + '&lt;...&gt;' : text}}</span>
                         <span class="message__body__text__body-date">&lt;{{time}}&gt;</span>
                     </div>
                     <span class="message__body__text-tag">*/</span>
@@ -33,24 +33,31 @@
             text: String,
             image: String,
             time: String,
-            count: Number
+            count: Number,
+            companion_id: String
         },
         methods: {
             openDialog() {
-                this.$router.push({name: Dialog.name});
+                this.$router.push({name: Dialog.name, params: {companion_id: this.companion_id}});
             }
         },
         data() {
             return {
-                color: ''
+                color: '',
+                length: 40
             }
         },
         mounted() {
+            // eslint-disable-next-line no-console
+            console.log(this.companion_id);
             if (this.image === '') {
                 let r = Math.floor(Math.random() * (256)),
                     g = Math.floor(Math.random() * (256)),
                     b = Math.floor(Math.random() * (256));
                 this.color = '#' + r.toString(16) + g.toString(16) + b.toString(16);
+            }
+            if (screen.width <= '540') {
+                this.length = 20;
             }
         }
     }
@@ -147,6 +154,83 @@
                             position: absolute;
                             top: 5px;
                             right: 5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 1120px) {
+        .m {
+            & .message {
+                width: 100%;
+                &__title {
+                    & span {
+                        font-size: 14px;
+                    }
+                }
+                &__body {
+                    &__img {
+                        margin: 15px;
+                        &-circle {
+                            margin: 10px;
+                            width: 100px;
+                            height: 100px;
+                            font-size: 16px;
+                        }
+                        &-img {
+                            width: 100px;
+                            height: 100px;
+                        }
+                    }
+                    &__text {
+                        width: calc(100% - 150px);
+                        max-height: 120px;
+                        &__body {
+                            &-text {
+                                margin-left: 15px;
+                                font-size: 15px;
+                            }
+                            &-date {
+                                font-size: 8px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 730px) {
+
+        .m {
+            & .message {
+                &__title {
+                    & span {
+                        font-size: 10px;
+                    }
+                }
+                &__body {
+                    &__img {
+                        display: none;
+                        &-circle {
+                            display: none;
+                        }
+                    }
+                    &__text {
+                        width: 100%;
+                        margin: 5px 10px 10px;
+                        &__body {
+                            &-text {
+                                margin-left: 10px;
+                                font-size: 12px;
+                            }
+                            &-date {
+                                font-size: 8px;
+                            }
+                        }
+                        &-tag {
+                            padding: 5px;
+                            font-size: 14px;
                         }
                     }
                 }

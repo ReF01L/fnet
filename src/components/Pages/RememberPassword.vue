@@ -8,9 +8,10 @@
                 </div>
                 <div class="btns">
                     <div class="btns__main">
-                        <button @click="goToLogin" type="button" class="btn_bg">&lt;exit/&gt;</button>
+                        <button class="btn_trans btn_ub">&lt;back/&gt;</button>
                         <button @click="step++" type="button" class="btn_trans">&lt;next/&gt;</button>
                     </div>
+                    <button @click="exit" type="button" class="btn_bg" style="align-self: center; margin-top: 15px;">&lt;exit/&gt;</button>
                 </div>
             </div>
         </div>
@@ -24,9 +25,9 @@
                 <div class="btns">
                     <div class="btns__main">
                         <button @click="step--" type="button" class="btn_trans">&lt;back/&gt;</button>
-                        <button @click="changePassword" type="button" class="btn_trans">&lt;next/&gt;</button>
+                        <button @click="goToLast" type="button" class="btn_trans">&lt;next/&gt;</button>
                     </div>
-                    <button @click="goToLogin" type="button" class="btn_bg" style="align-self: center; margin-top: 15px;">
+                    <button @click="exit" type="button" class="btn_bg" style="align-self: center; margin-top: 15px;">
                         &lt;exit/&gt;
                     </button>
                 </div>
@@ -49,10 +50,10 @@
             }
         },
         methods: {
-            goToLogin() {
+            exit() {
                 this.$router.replace({name: Login.name});
             },
-            changePassword() {
+            goToLast() {
                 if (this.code !== '') {
                     let email = this.email;
                     this.$router.replace({name: NewPassword.name, params: {email}});
@@ -105,6 +106,14 @@
                     cursor: pointer;
                 }
             }
+            .btn_ub {
+                border: 1px solid rgba(241, 241, 241, 0.2);
+                color: rgba(241, 241, 241, 0.2);
+                &:hover {
+                    background: transparent;
+                    cursor: default;
+                }
+            }
         }
         .login {
             border: none;
@@ -115,9 +124,9 @@
             background: #484848;
             border-radius: 10px;
             padding: 50px;
-            /*TODO: ошибка*/
             &-error {
-                color: red;
+                margin: 10px;
+                color: #EA6A47;
             }
             & h2 {
                 font-size: 30px;

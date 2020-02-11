@@ -5,12 +5,12 @@
         </div>
         <div class="messages__box">
             <div class="dialogs">
-                <Dialog class="dialog" v-for="dialog in sortedMessages" :key="dialog.id"
-                        :companion="dialog.companion"
+                <Dialog class="dialog" v-for="(dialog, i) in dialogs" :key="dialog.id"
+                        :companion="dialog.companion_name"
                         :text="dialog.text"
-                        :image="dialog.image"
                         :time="dialog.time"
-                        :count="dialog.count"
+                        :image="''"
+                        :companion_id="i"
                 />
             </div>
         </div>
@@ -25,61 +25,24 @@
         components: {Dialog},
         data() {
             return {
-                dialogs: [
-                    {
-                        companion: 'Alexandr',
-                        text: 'Привет, хотел у тебя спросить. Как ты делал дз по линалу, геометрии и плюсам?',
-                        image: 'profileImage.png',
-                        time: '16:40 { 1 feb 2020 }',
-                        count: 1
-                    },
-                    {
-                        companion: 'Ilya',
-                        text: 'Привет',
-                        image: '',
-                        time: '16:40 { 1 feb 2020 }',
-                        count: 1
-                    },
-                    {
-                        companion: 'ReF0iL',
-                        text: 'Привет',
-                        image: 'profileImage.png',
-                        time: '16:40 { 1 feb 2020 }',
-                        count: 3
-                    },
-                    {
-                        companion: 'Max',
-                        text: 'Привет',
-                        image: 'profileImage.png',
-                        time: '16:40 { 1 feb 2020 }',
-                        count: 6
-                    },
-                    {
-                        companion: 'Vlad',
-                        text: 'Привет',
-                        image: '',
-                        time: '16:40 { 1 feb 2020 }',
-                        count: 0
-                    }
-                ]
+                dialogs: []
             }
         },
-        computed: {
-            sortedMessages() {
-                // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-                return this.dialogs.sort((m1, m2) => {
-                        return m1.time < m2.time ? 1 : -1;
-                    }
-                )
-            }
-        }
+        mounted() {
+            window.axios
+                .get(`http://20.188.3.202:5000/api/messages/dialogs?token=${localStorage.getItem('token')}`)
+                .then(response => {
+                    this.dialogs = response.data.dialogs;
+                })
+        },
+
     }
 </script>
 
 <style lang="scss" scoped>
     .messages {
         padding-top: 25px;
-        min-height: calc(100vh + 60px);
+        min-height: 100vh;
         background-color: var(--main-bg-color);
         width: 100%;
         display: flex;
@@ -90,6 +53,7 @@
             width: 70%;
             align-self: center;
             & input {
+                border-radius: 10px;
                 width: 95%;
                 padding: 10px;
                 margin: 10px auto;
@@ -111,7 +75,33 @@
             }
         }
     }
-
+    @media (max-width: 1120px) {
+        .messages {
+            padding-top: 10px;
+            .search {
+                width: 100%;
+            }
+            &__box {
+                .dialogs {
+                    margin: auto;
+                    .dialog {
+                        padding: 10px;
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 440px) {
+        .messages {
+            &__box {
+                .dialogs {
+                    .dialog {
+                        padding: 0;
+                    }
+                }
+            }
+        }
+    }
 
 
 </style>

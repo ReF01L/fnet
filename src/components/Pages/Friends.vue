@@ -1,7 +1,7 @@
 <template>
     <div class="friends">
         <div class="friends__search">
-            <input type="search" class="search" placeholder="<Find/>">
+            <input v-model="search" type="search" class="search" placeholder="<Find/>">
         </div>
         <div class="friends__place">
             <div class="friends__request">
@@ -9,17 +9,17 @@
                     <span class="friends__request__title-title">&lt;friend_requests/&gt;</span>
                 </div>
                 <div class="friends__request__body">
-                    <div class="friends__request__body__card" v-for="f in request" :key="f.id">
+                    <div class="friends__request__body__card" v-for="(f, index) in getRequest" :key="f.id">
                         <div class="friends__request__body__card-img">
                             <img class="circle-img" src="../../assets/profileImage.png" alt="">
                         </div>
-                        <span class="friends__request__body__card-add">+</span>
+                        <span @click="accept(index)" class="friends__request__body__card-add">+</span>
                     </div>
                 </div>
             </div>
             <div class="friends__current">
-                <BaseCard class="friends__current-card" v-for="friend in friends" :key="friend.id"
-                    :name="friend.name" :status="friend.status"/>
+                <BaseCard class="friends__current-card" v-for="friend in cardByTitle" :key="friend.id"
+                    :name="`${friend.first_name} ${friend.last_name}`"/>
             </div>
         </div>
     </div>
@@ -34,23 +34,59 @@
         data() {
             return {
                 search: '',
-                friends: [
-                    {name: 'Дмитрий Салушкин', status: 'online'},
-                    {name: 'Дмитрий Салушкин', status: 'online'},
-                    {name: 'Дмитрий Салушкин', status: ''},
-                    {name: 'Дмитрий Салушкин', status: ''},
-                    {name: 'Дмитрий Салушкин', status: 'online'},
-                ],
-                request: [
-                    {name: 'Дмитрий Салушкин'},
-                    {name: 'Дмитрий Салушкин'},
-                    {name: 'Дмитрий Салушкин'}
-                ]
+                friends: [],
+                request: []
             }
         },
+        methods: {
+            accept(id) {
+                window.axios
+                    .put(`http://20.188.3.202:5000/api/friends/${this.request[id].sender_id}`, {token: localStorage.getItem('token')})
+                    .then( () => {
+                        this.friends.push(this.request[id]);
+                        this.request.splice(id, 1);
+                    })
+                    .catch(error => {
+                        alert("Отсутствует соединение с сервером: \n" + error);
+                    });
+            },
+        },
+        mounted() {
+            window.axios
+                .get(`http://20.188.3.202:5000/api/friends/${localStorage.getItem('user_id')}`)
+                .then(response => {
+                    this.friends = response.data.friends;
+                    window.axios
+                        .get(`http://20.188.3.202:5000/api/friends/requests?token=${localStorage.getItem('token')}`)
+                        .then(response => {
+                            this.request = response.data.followers;
+                            // eslint-disable-next-line no-console
+                            console.log(response);
+                            if (this.request.length === 0) {
+                                document.querySelectorAll('.friends__request').forEach(elem => {
+                                    elem.style.opacity = 0;
+                                })
+                            }
+                        })
+                        .catch(error => {
+                            alert("Отсутствует соединение с сервером: \n" + error);
+                        });
+                })
+                .catch(error => {
+                    alert("Отсутствует соединение с сервером: \n" + error);
+                });
+        },
         computed: {
+            getRequest() {
+                if (this.request.length === 0) {
+                    document.querySelectorAll('.friends__request').forEach(elem => {
+                        elem.style.display = 'none';
+                    })
+                }
+                return this.request;
+            },
             cardByTitle() {
-                return this.friends.filter(friend => friend.name.indexOf(this.search) !== -1);
+                return this.friends.filter(friend => friend.first_name.indexOf(this.search) !== -1 || friend.last_name.indexOf(this.search) !== -1);
             }
         }
     }
@@ -60,7 +96,7 @@
     .friends {
         padding-top: 40px;
         width: 100vw;
-        min-height: calc(100vh + 60px);
+        min-height: 100vh;
         background-color: var(--main-bg-color);
         &__search {
             margin-bottom: 20px;
@@ -125,12 +161,36 @@
                 }
             }
             & .friends__current {
-                width: 60%;
+                margin-left: 10%;
+                width: 100%;
                 display: flex;
                 flex-wrap: wrap;
                 &-card {
-                    margin: 0 15px 30px;
-                    flex-basis: 5%;
+                    margin: 15px;
+                }
+            }
+        }
+    }
+    @media (max-width: 1645px) {
+        .friends {
+            &__place {
+                & .friends__current {
+                    &-card {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 1275px) {
+        .friends {
+            &__place {
+                & .friends__request {
+                    display: none;
+                }
+                & .friends__current {
+                    width: 100%;
+                    margin: auto;
                 }
             }
         }

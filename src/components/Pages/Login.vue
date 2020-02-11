@@ -12,7 +12,7 @@
                 </div>
                 <div class="btns">
                     <div class="btns__main">
-                        <button @click="swapWindow" class="btn_sign">&lt;sign_up/&gt;</button>
+                        <button @click="sign_up" class="btn_sign">&lt;sign_up/&gt;</button>
                         <button @click="login" type="button" class="btn_login">&lt;login&gt;</button>
                     </div>
                     <span @click="rememberPassword" class="rpass">Remember password</span>
@@ -43,30 +43,37 @@
             rememberPassword() {
                 this.$router.replace({name: RememberPassword.name})
             },
-            swapWindow() {
+            sign_up() {
                 this.$router.replace({name: Registration.name})
             },
             login() {
                 let t = this;
                 window.axios
-                    .post('http://20.188.3.202:5000/auth/login', t.user)
+                    .post('http://20.188.3.202:5000/api/auth/login', t.user)
                     .then(response => {
                         t.success = response.data.status;
                         if (t.success === 'auth_success') {
                             t.error = '';
-                            // TODO: сохранять токен
-                            this.$router.replace({name: Profile.name})
+                            try {
+                                localStorage.setItem('user_id', response.data.user_id);
+                                localStorage.setItem('token', response.data.token);
+
+                                this.$router.replace({name: Profile.name, params: {id: localStorage.getItem('user_id')}});
+                            } catch (e) {
+                                alert('У тебя хуёвое локальное хранилище: \n' + e)
+                            }
                         } else {
                             t.error = response.data.error_message;
                         }
-                        // eslint-disable-next-line no-console
-                        console.log(response);
                     })
                     .catch(error => {
-                        // eslint-disable-next-line no-console
-                        console.log(error);
                         alert("Хуёвое соединение с сервером: \n" + error);
                     });
+            },
+        },
+        mounted() {
+            if (localStorage.getItem('token')) {
+                this.$router.replace({name: Profile.name});
             }
         }
     }
@@ -133,16 +140,16 @@
             background: #484848;
             border-radius: 10px;
             padding: 50px;
-            /*TODO: ошибка*/
             &-error {
-                color: red;
+                margin: 10px;
+                color: #EA6A47;
             }
             & h2 {
                 font-size: 30px;
                 color: #f1f1f1;
             }
             &-form {
-                margin: 15px auto;
+                margin: auto 30px 30px;
                 width: 100%;
                 & input {
                     width: 90%;

@@ -17,55 +17,18 @@
     export default {
         name: "ProfileFriends",
         components: {Carousel},
-        data() {
-            return {
-                sliderItems: [
-                    [
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                    ],
-                    [
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                    ],
-                    [
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                    ],
-                    [
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                    ],
-                    [
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                        {name: 'Салушкин Дмитрий', img: 'profileImage.png'},
-                    ],
-                ]
-            }
-        },
+        props: {
+            sliderItems: Array
+        }
     }
 </script>
 
 <style lang="scss" scoped>
     .social {
         width: 70%;
+        min-height: 300px;
         position: relative;
-
+        margin: auto;
         &__title {
             width: 100%;
             background: #484848;
@@ -88,7 +51,9 @@
             flex-direction: column;
             background: #202020;
             width: 100%;
+            min-height: 160px;
             border-radius: 0 0 30px 30px;
+
             &-tag {
                 color: #f1f1f1;
                 padding: 15px;
@@ -96,6 +61,7 @@
                 align-self: flex-start;
 
                 &:last-child {
+                    margin: auto 0 0;
                     align-self: flex-end;
                 }
             }
